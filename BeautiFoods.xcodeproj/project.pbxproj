@@ -7,18 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CB28B736A5008EB776 /* SettingsView.swift */; };
+		A97084CE28B736B2008EB776 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CD28B736B2008EB776 /* CartView.swift */; };
+		A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CF28B73D63008EB776 /* CartPersistence.swift */; };
+		A995B77828C44FDB0055B5EE /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995B77728C44FDB0055B5EE /* BadgeView.swift */; };
 		A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */; };
-		A99D1B9A28B4729B00B7F920 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* ContentView.swift */; };
+		A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* HomeContentView.swift */; };
 		A99D1B9C28B472A000B7F920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9B28B472A000B7F920 /* Assets.xcassets */; };
 		A99D1B9F28B472A000B7F920 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */; };
+		A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA528B4757000B7F920 /* ProductStructure.swift */; };
+		A99D1BA828B4784600B7F920 /* ProductContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA728B4784600B7F920 /* ProductContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A97084CB28B736A5008EB776 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A97084CD28B736B2008EB776 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		A97084CF28B73D63008EB776 /* CartPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPersistence.swift; sourceTree = "<group>"; };
+		A995B77728C44FDB0055B5EE /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		A99D1B9428B4729B00B7F920 /* BeautiFoods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautiFoods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautiFoodsApp.swift; sourceTree = "<group>"; };
-		A99D1B9928B4729B00B7F920 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A99D1B9928B4729B00B7F920 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
 		A99D1B9B28B472A000B7F920 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A99D1BA528B4757000B7F920 /* ProductStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductStructure.swift; sourceTree = "<group>"; };
+		A99D1BA728B4784600B7F920 /* ProductContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +64,13 @@
 			isa = PBXGroup;
 			children = (
 				A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */,
-				A99D1B9928B4729B00B7F920 /* ContentView.swift */,
+				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
+				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
+				A97084CB28B736A5008EB776 /* SettingsView.swift */,
+				A97084CD28B736B2008EB776 /* CartView.swift */,
+				A99D1BA528B4757000B7F920 /* ProductStructure.swift */,
+				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
+				A995B77728C44FDB0055B5EE /* BadgeView.swift */,
 				A99D1B9B28B472A000B7F920 /* Assets.xcassets */,
 				A99D1B9D28B472A000B7F920 /* Preview Content */,
 			);
@@ -137,8 +155,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A99D1B9A28B4729B00B7F920 /* ContentView.swift in Sources */,
+				A995B77828C44FDB0055B5EE /* BadgeView.swift in Sources */,
+				A97084CE28B736B2008EB776 /* CartView.swift in Sources */,
+				A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */,
 				A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */,
+				A99D1BA828B4784600B7F920 /* ProductContentView.swift in Sources */,
+				A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */,
+				A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */,
+				A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
