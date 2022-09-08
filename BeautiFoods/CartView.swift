@@ -69,7 +69,16 @@ struct CartView: View {
                                     .font(Font.caption2)
                             }
                         }
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                isRemoveItemAlertPresented = true
+                                removeItem = i
+                            } label: {
+                                Text("Remove from Cart")
+                            }
+                        }
                     } else {
+                        //Nothing
                     }
                 }
             }
