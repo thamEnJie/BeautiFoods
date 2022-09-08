@@ -14,6 +14,9 @@ struct HomeContentView: View {
     @State var searchProducts: String = ""
     @StateObject var cartManager = CartItemManager()
     
+    let badgewWidth = 32
+    let badgeOffset = -5
+    
     let productColumns = [
         GridItem(.adaptive(minimum: 100), spacing: 25, alignment: .center)
     ]
@@ -42,6 +45,8 @@ struct HomeContentView: View {
                 }
                 .padding()
                 ScrollView (.vertical, showsIndicators: true) {
+                    Spacer()
+                        .frame(height: CGFloat(badgewWidth/2-badgeOffset))
                     LazyVGrid(columns: productColumns, spacing: 20) {
                         ForEach(ProductList, id: \.self) { item in
                             if searchProducts.isEmpty {
@@ -59,10 +64,10 @@ struct HomeContentView: View {
                                     }
                                 }
                                 .badge(
-                                    width: 32,
+                                    width: badgewWidth,
                                     count: cartManager.cartItems[item.productIndex].count,
                                     tintColour: Color(UIColor.label),
-                                    offset: -5
+                                    offset: badgeOffset
                                 )
                             }
                         }
