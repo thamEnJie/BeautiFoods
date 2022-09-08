@@ -45,7 +45,7 @@ struct HomeContentView: View {
                             if searchProducts.isEmpty {
                                 ZStack(alignment: .bottom) {
                                     NavigationLink {
-                                        ProductContentView(itemIndex: item.productIndex)
+                                        ProductContentView(itemIndex: item.productIndex, cartManager: cartManager)
                                     } label: {
                                         VStack {
                                             Image(item.imageName)
@@ -86,7 +86,7 @@ struct HomeContentView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink  {
-                        CartView()
+                        CartView(cartManager: cartManager)
                     } label: {
                         VStack {
                             Image(systemName: "cart")
@@ -94,6 +94,21 @@ struct HomeContentView: View {
                         }
                     }
 
+                }
+            }
+            .onAppear {
+                if !viewLoadedAlready{
+                    let old = cartManager.cartItems
+                    var update: [CartItem] = []
+                    for i in 0...ProductList.count-1 {
+                        if let updatedIndex = old.firstIndex(where: { $0.productID == i }) {
+                            update.append(CartItem(productID: i, count: old[updatedIndex].count))
+                        } else {
+                            update.append(CartItem(productID: i, count: 0))
+                        }
+                    }
+                    cartManager.cartItems = update
+                    viewLoadedAlready = true
                 }
             }
         }

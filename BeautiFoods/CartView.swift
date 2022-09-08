@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     
-    @StateObject var cartManager = CartItemManager()
+    @ObservedObject var cartManager: CartItemManager
     
     func totalCost(_ cartM: CartItemManager) -> Double {
         var total = 0.0
@@ -43,11 +43,7 @@ struct CartView: View {
                                 Spacer()
                                 Button {
                                     if i.count > 1 {
-                                        let itemLocation = i.productID
-                                        var newItem = cartManager.cartItems[itemLocation]
-                                        newItem.count -= 1
-                                        cartManager.cartItems.remove(at: itemLocation)
-                                        cartManager.cartItems.insert(newItem, at: itemLocation)
+                                        cartManager.cartItems[i.productID].count -= 1
                                     }
                                     else {
                                         isRemoveItemAlertPresented = true
@@ -59,11 +55,7 @@ struct CartView: View {
                                 }
                                 Text(String(i.count))
                                 Button {
-                                    let itemLocation = i.productID
-                                    var newItem = cartManager.cartItems[itemLocation]
-                                    newItem.count += 1
-                                    cartManager.cartItems.remove(at: itemLocation)
-                                    cartManager.cartItems.insert(newItem, at: itemLocation)
+                                    cartManager.cartItems[i.productID].count += 1
                                 } label: {
                                     Image(systemName: "plus.circle")
                                         .imageScale(.large)
@@ -86,12 +78,8 @@ struct CartView: View {
         }
         .alert("Remove from Cart", isPresented: $isRemoveItemAlertPresented, presenting: removeItem) { item in
             Button(role: .destructive) {
-                let itemLocation = item.productID
-                var newItem = cartManager.cartItems[itemLocation]
-                newItem.count = 0
                 withAnimation() {
-                    cartManager.cartItems.remove(at: itemLocation)
-                    cartManager.cartItems.insert(newItem, at: itemLocation)
+                    cartManager.cartItems[item.productID].count = 0
                 }
             } label: {
                 Text("Remove")
@@ -105,6 +93,6 @@ struct CartView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView()
+        CartView(cartManager: CartItemManager())
     }
 }

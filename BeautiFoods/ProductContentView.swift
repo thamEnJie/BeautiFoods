@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProductContentView: View {
     var itemIndex: Int
-    @StateObject var cartManager = CartItemManager()
+    @ObservedObject var cartManager: CartItemManager
     var body: some View {
         VStack {
             Text(ProductList[itemIndex].name)
@@ -26,6 +26,6 @@ struct ProductContentView: View {
 
 struct ProductContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductContentView(itemIndex: 0)
+        ProductContentView(itemIndex: 0, cartManager: CartItemManager())
     }
 }
