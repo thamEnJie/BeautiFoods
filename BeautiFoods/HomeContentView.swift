@@ -37,6 +37,8 @@ struct HomeContentView: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                     TextField("Search for Products", text: $searchProducts)
+                    Image(systemName: "line.3.horizontal.decrease")
+                        .foregroundColor(.accentColor)
                 }
                 .padding()
                 ScrollView (.vertical, showsIndicators: true) {
@@ -59,7 +61,7 @@ struct HomeContentView: View {
                                 .badge(
                                     width: 32,
                                     count: cartManager.cartItems[item.productIndex].count,
-                                    tintColour: .black,
+                                    tintColour: Color(UIColor.label),
                                     offset: -5
                                 )
                             }
