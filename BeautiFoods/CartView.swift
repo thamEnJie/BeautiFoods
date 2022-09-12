@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     
     @ObservedObject var cartManager: CartItemManager
+    @Binding var openCheckout: Bool
     
     func totalCost(_ cartM: CartItemManager) -> Double {
         var total = 0.0
@@ -137,6 +138,6 @@ struct CartView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView(cartManager: CartItemManager())
+        CartView(cartManager: CartItemManager(), openCheckout: .constant(false))
     }
 }

@@ -15,6 +15,8 @@ struct HomeContentView: View {
     @State var searchProducts: String = ""
     @StateObject var cartManager = CartItemManager()
     
+    @State var loadCheckoutView = false
+    
     let badgewWidth = 32
     let badgeOffset = -5
     
