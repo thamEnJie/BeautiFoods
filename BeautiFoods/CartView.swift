@@ -22,6 +22,8 @@ struct CartView: View {
     @State var isRemoveItemAlertPresented: Bool = false
     @State var removeItem: CartItem?
     
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         VStack {
             HStack {
@@ -32,58 +34,91 @@ struct CartView: View {
                 Spacer()
             }
             List {
-                ForEach(cartManager.cartItems) { i in
-                    if i.count > 0 {
-                        let item = ProductList[i.productID]
-                        VStack {
-                            HStack {
-                                Text(item.name)
-                                    .font(Font.body)
-                                    .fontWeight(.medium)
-                                Spacer()
-                                Button {
-                                    if i.count > 1 {
-                                        cartManager.cartItems[i.productID].count -= 1
-                                    }
-                                    else {
-                                        isRemoveItemAlertPresented = true
-                                        removeItem = i
-                                    }
-                                } label: {
-                                    Image(systemName: "minus.circle")
-                                        .imageScale(.large)
-                                }
-                                Text(String(i.count))
-                                Button {
-                                    cartManager.cartItems[i.productID].count += 1
-                                } label: {
-                                    Image(systemName: "plus.circle")
-                                        .imageScale(.large)
-                                }
-                            }
-                            HStack {
-                                Text("$" + String(item.cost))
-                                    .font(Font.caption)
-                                Spacer()
-                                Text("$" + String(format: "%.2f", item.cost * Double(i.count)))
-                                    .font(Font.caption2)
+                if String(format: "%.2f", totalCost(cartManager)) == "0.00" {
+                    HStack {
+                        Spacer()
+                        Button {
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            VStack {
+                                Image(systemName: "bag.circle")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(.top)
+                                    .padding(.horizontal)
+                                    .padding(.horizontal)
+                                Text("Shop for more in market")
+                                    .font(Font.title2)
+                                    .padding()
                             }
                         }
-                        .swipeActions {
-                            Button(role: .destructive) {
-                                isRemoveItemAlertPresented = true
-                                removeItem = i
-                            } label: {
-                                Text("Remove from Cart")
+                        Spacer()
+                    }
+                } else {
+                    ForEach(cartManager.cartItems) { i in
+                        if i.count > 0 {
+                            let item = ProductList[i.productID]
+                            HStack {
+                                VStack {
+                                    HStack {
+                                        Text(item.name)
+                                            .font(Font.body)
+                                            .fontWeight(.medium)
+                                        Spacer()
+                                        Button {
+                                            if i.count > 1 {
+                                                cartManager.cartItems[i.productID].count -= 1
+                                            }
+                                            else {
+                                                isRemoveItemAlertPresented = true
+                                                removeItem = i
+                                            }
+                                        } label: {
+                                            Image(systemName: "minus.circle")
+                                                .imageScale(.large)
+                                        }
+                                        Text(String(i.count))
+                                        Button {
+                                            cartManager.cartItems[i.productID].count += 1
+                                        } label: {
+                                            Image(systemName: "plus.circle")
+                                                .imageScale(.large)
+                                        }
+                                    }
+                                    HStack {
+                                        Text("$" + String(item.cost))
+                                            .font(Font.caption)
+                                        Spacer()
+                                        Text("$" + String(format: "%.2f", item.cost * Double(i.count)))
+                                            .font(Font.caption2)
+                                    }
+                                }
                             }
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    isRemoveItemAlertPresented = true
+                                    removeItem = i
+                                } label: {
+                                    Text("Remove from Cart")
+                                }
+                            }
+                        } else {
+                            // Nothing
                         }
-                    } else {
-                        //Nothing
                     }
                 }
             }
             .buttonStyle(.borderless)
-
+            if String(format: "%.2f", totalCost(cartManager)) == "0.00" {
+                Button {
+                    openCheckout = true
+                    presentationMode.wrappedValue.dismiss()
+                    
+                } label: {
+                    Text("Checkout")
+                }
+                .padding(.top)
+            }
         }
         .alert("Remove from Cart", isPresented: $isRemoveItemAlertPresented, presenting: removeItem) { item in
             Button(role: .destructive) {
@@ -96,7 +131,7 @@ struct CartView: View {
         } message: { item in
             Text("Remove *\(ProductList[item.productID].name)* from Cart? You can add it again in the home page.")
         }
-
+        
     }
 }
 
