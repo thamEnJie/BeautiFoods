@@ -129,7 +129,7 @@ struct CartView: View {
                 Text("Remove")
             }
         } message: { item in
-            Text("Remove *\(ProductList[item.productID].name)* from Cart? You can add it again in the home page.")
+            Text("Remove all '\(ProductList[item.productID].name)' from Cart? You can add it again in the home page.")
         }
         
     }
