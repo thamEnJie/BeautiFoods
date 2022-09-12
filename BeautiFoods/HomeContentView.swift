@@ -35,6 +35,12 @@ struct HomeContentView: View {
     var body: some View {
         NavigationView {
             VStack {
+                NavigationLink(
+                    destination: CheckoutPageView(),
+                    isActive: $loadCheckoutView
+                ) {
+                    EmptyView()
+                }
                 HStack {
                     VStack {
                         Text("BeautiFoods") // Add name?
