@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeContentView: View {
     
     @State var viewLoadedAlready = false
+    @State var showCartSheet = false
     
     @State var searchProducts: String = ""
     @StateObject var cartManager = CartItemManager()
@@ -92,8 +93,8 @@ struct HomeContentView: View {
 
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink  {
-                        CartView(cartManager: cartManager)
+                    Button  {
+                        showCartSheet = true
                     } label: {
                         VStack {
                             Image(systemName: "cart")
@@ -102,6 +103,9 @@ struct HomeContentView: View {
                     }
 
                 }
+            }
+            .sheet(isPresented: $showCartSheet) {
+                CartView(cartManager: cartManager, openCheckout: $loadCheckoutView)
             }
             .onAppear {
                 if !viewLoadedAlready{
