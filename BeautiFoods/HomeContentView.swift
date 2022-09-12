@@ -22,6 +22,14 @@ struct HomeContentView: View {
         GridItem(.adaptive(minimum: 100), spacing: 25, alignment: .center)
     ]
     
+    func countCart(_ cartM: CartItemManager) -> Int {
+        var a = 0
+        for i in cartM.cartItems {
+            a += i.count
+        }
+        return a
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -37,7 +45,7 @@ struct HomeContentView: View {
                     .padding(.top, 15)
                     .padding(.bottom, 25)
                 }
-
+                
                 HStack {
                     Image(systemName: "magnifyingglass")
                     TextField("Search for Products", text: $searchProducts)
@@ -90,18 +98,19 @@ struct HomeContentView: View {
                             Text("Profile")
                         }
                     }
-
+                    
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button  {
                         showCartSheet = true
                     } label: {
                         VStack {
-                            Image(systemName: "cart")
+                            Image(systemName: (countCart(cartManager)==0 ? "cart" : "cart.fill"))
                             Text("Cart")
                         }
+                        .badge(width: 17, count: countCart(cartManager), tintColour: .black, offset: -2)
                     }
-
+                    
                 }
             }
             .sheet(isPresented: $showCartSheet) {
