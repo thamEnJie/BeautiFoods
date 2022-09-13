@@ -110,7 +110,7 @@ struct CartView: View {
                 }
             }
             .buttonStyle(.borderless)
-            if String(format: "%.2f", totalCost(cartManager)) == "0.00" {
+            if String(format: "%.2f", totalCost(cartManager)) != "0.00" {
                 Button {
                     openCheckout = true
                     presentationMode.wrappedValue.dismiss()
