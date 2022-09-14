@@ -119,6 +119,7 @@ struct CartView: View {
                     Text("Checkout")
                 }
                 .padding(.top)
+                .frame(maxWidth: .infinity)
             }
         }
         .alert("Remove from Cart", isPresented: $isRemoveItemAlertPresented, presenting: removeItem) { item in
