@@ -11,6 +11,7 @@
 		A97084CE28B736B2008EB776 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CD28B736B2008EB776 /* CartView.swift */; };
 		A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CF28B73D63008EB776 /* CartPersistence.swift */; };
 		A995B77828C44FDB0055B5EE /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995B77728C44FDB0055B5EE /* BadgeView.swift */; };
+		A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A997157328D174D3003B69DC /* FilterBottomSheetView.swift */; };
 		A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */; };
 		A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* HomeContentView.swift */; };
 		A99D1B9C28B472A000B7F920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9B28B472A000B7F920 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 		A97084CD28B736B2008EB776 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		A97084CF28B73D63008EB776 /* CartPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPersistence.swift; sourceTree = "<group>"; };
 		A995B77728C44FDB0055B5EE /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		A997157328D174D3003B69DC /* FilterBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBottomSheetView.swift; sourceTree = "<group>"; };
 		A99D1B9428B4729B00B7F920 /* BeautiFoods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautiFoods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautiFoodsApp.swift; sourceTree = "<group>"; };
 		A99D1B9928B4729B00B7F920 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			children = (
 				A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */,
 				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
+				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
 				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
 				A97084CB28B736A5008EB776 /* SettingsView.swift */,
 				A97084CD28B736B2008EB776 /* CartView.swift */,
@@ -167,6 +170,7 @@
 				A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */,
 				A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */,
 				A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */,
+				A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

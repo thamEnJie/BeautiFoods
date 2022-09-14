@@ -11,11 +11,14 @@ struct HomeContentView: View {
     
     @State var viewLoadedAlready = false
     @State var showCartSheet = false
-    
-    @State var searchProducts: String = ""
-    @StateObject var cartManager = CartItemManager()
-    
     @State var loadCheckoutView = false
+    @State var showFilterCard = false
+    @State var backgroundBlur = 0.0
+    
+    @State var filters = Filter(sorting: .random, productType: [true, true], priceRange: [0,-1])  // -1 means no filtera
+    @State var searchProducts: String = ""
+    
+    @StateObject var cartManager = CartItemManager()
     
     let badgewWidth = 32
     let badgeOffset = -5
@@ -57,8 +60,12 @@ struct HomeContentView: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                     TextField("Search for Products", text: $searchProducts)
-                    Image(systemName: "line.3.horizontal.decrease")
-                        .foregroundColor(.accentColor)
+                    Button {
+                        showFilterCard = true
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease")
+                            .foregroundColor(.accentColor)
+                    }
                 }
                 .padding()
                 ScrollView (.vertical, showsIndicators: true) {
@@ -95,6 +102,7 @@ struct HomeContentView: View {
                 .padding(.vertical)
                 Spacer()
             }
+            .blur(radius: CGFloat(backgroundBlur))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -105,8 +113,8 @@ struct HomeContentView: View {
                             Image(systemName: "person.crop.circle")
                             Text("Profile")
                         }
+                        .blur(radius: CGFloat(backgroundBlur))
                     }
-                    
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button  {
@@ -117,8 +125,8 @@ struct HomeContentView: View {
                             Text("Cart")
                         }
                         .badge(width: 17, count: countCart(cartManager), tintColour: .black, offset: -2)
+                        .blur(radius: CGFloat(backgroundBlur))
                     }
-                    
                 }
             }
             .sheet(isPresented: $showCartSheet) {
@@ -138,6 +146,11 @@ struct HomeContentView: View {
                     cartManager.cartItems = update
                     viewLoadedAlready = true
                 }
+            }
+        }
+        .overlay {
+            if showFilterCard {
+                FilterBottomSheetView(isPresented: $showFilterCard, filter: $filters, blur: $backgroundBlur)
             }
         }
     }
