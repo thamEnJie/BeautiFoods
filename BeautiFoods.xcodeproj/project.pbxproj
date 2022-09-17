@@ -76,7 +76,7 @@
 				A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */,
 				A9B8B5CD28D61AF10006CC22 /* Views */,
 				A9B8B5CE28D61B0F0006CC22 /* Models */,
-				A9B8B5CF28D61B160006CC22 /* ViewModels */,
+				A9B8B5D328D620D10006CC22 /* ViewModels */,
 				A9B5802E28D601B6002169EA /* GoogleService-Info.plist */,
 				A99D1B9B28B472A000B7F920 /* Assets.xcassets */,
 				A99D1B9D28B472A000B7F920 /* Preview Content */,
@@ -110,14 +110,6 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		A9B8B5CF28D61B160006CC22 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		A9B8B5D128D61F9A0006CC22 /* Market */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +127,14 @@
 				A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */,
 			);
 			name = Buy;
+			sourceTree = "<group>";
+		};
+		A9B8B5D328D620D10006CC22 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
