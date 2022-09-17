@@ -10,7 +10,6 @@
 		A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CB28B736A5008EB776 /* SettingsView.swift */; };
 		A97084CE28B736B2008EB776 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CD28B736B2008EB776 /* CartView.swift */; };
 		A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CF28B73D63008EB776 /* CartPersistence.swift */; };
-		A995B77828C44FDB0055B5EE /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995B77728C44FDB0055B5EE /* BadgeView.swift */; };
 		A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A997157328D174D3003B69DC /* FilterBottomSheetView.swift */; };
 		A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */; };
 		A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* HomeContentView.swift */; };
@@ -29,7 +28,6 @@
 		A97084CB28B736A5008EB776 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A97084CD28B736B2008EB776 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		A97084CF28B73D63008EB776 /* CartPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPersistence.swift; sourceTree = "<group>"; };
-		A995B77728C44FDB0055B5EE /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		A997157328D174D3003B69DC /* FilterBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBottomSheetView.swift; sourceTree = "<group>"; };
 		A99D1B9428B4729B00B7F920 /* BeautiFoods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautiFoods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautiFoodsApp.swift; sourceTree = "<group>"; };
@@ -97,13 +95,9 @@
 		A9B8B5CD28D61AF10006CC22 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
-				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
-				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
+				A9B8B5D128D61F9A0006CC22 /* Market */,
 				A97084CB28B736A5008EB776 /* SettingsView.swift */,
-				A97084CD28B736B2008EB776 /* CartView.swift */,
-				A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */,
-				A995B77728C44FDB0055B5EE /* BadgeView.swift */,
+				A9B8B5D228D61FB70006CC22 /* Buy */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -122,6 +116,25 @@
 				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A9B8B5D128D61F9A0006CC22 /* Market */ = {
+			isa = PBXGroup;
+			children = (
+				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
+				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
+				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
+			);
+			name = Market;
+			sourceTree = "<group>";
+		};
+		A9B8B5D228D61FB70006CC22 /* Buy */ = {
+			isa = PBXGroup;
+			children = (
+				A97084CD28B736B2008EB776 /* CartView.swift */,
+				A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */,
+			);
+			name = Buy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,7 +217,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9C96FC428CED90000D8EA14 /* CheckoutPageView.swift in Sources */,
-				A995B77828C44FDB0055B5EE /* BadgeView.swift in Sources */,
 				A97084CE28B736B2008EB776 /* CartView.swift in Sources */,
 				A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */,
 				A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */,
