@@ -116,7 +116,7 @@ struct FilterBottomSheetView: View {
                                 HStack(spacing: 0) {
                                     ForEach(0...1, id: \.self) { i in
                                         Circle()
-                                            .foregroundColor(Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.1))) //.white
+                                            .foregroundColor(.white)
                                             .shadow(radius: handleSize/5, y: handleSize/6.5)
                                             .frame(width: handleSize, height: handleSize)
                                             .offset(x: priceRangeHandleOffset[i])
