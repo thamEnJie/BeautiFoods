@@ -18,7 +18,11 @@
 		A99D1B9F28B472A000B7F920 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */; };
 		A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA528B4757000B7F920 /* ProductStructure.swift */; };
 		A99D1BA828B4784600B7F920 /* ProductContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA728B4784600B7F920 /* ProductContentView.swift */; };
+		A9B5802F28D601B6002169EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9B5802E28D601B6002169EA /* GoogleService-Info.plist */; };
 		A9C96FC428CED90000D8EA14 /* CheckoutPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */; };
+		A9F2917F28D60A910019CB98 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A9F2917E28D60A910019CB98 /* FirebaseAuth */; };
+		A9F2918128D60A910019CB98 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A9F2918028D60A910019CB98 /* FirebaseFirestore */; };
+		A9F2918328D60A910019CB98 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A9F2918228D60A910019CB98 /* FirebaseFirestoreSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,7 @@
 		A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A99D1BA528B4757000B7F920 /* ProductStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductStructure.swift; sourceTree = "<group>"; };
 		A99D1BA728B4784600B7F920 /* ProductContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductContentView.swift; sourceTree = "<group>"; };
+		A9B5802E28D601B6002169EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,6 +47,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9F2917F28D60A910019CB98 /* FirebaseAuth in Frameworks */,
+				A9F2918128D60A910019CB98 /* FirebaseFirestore in Frameworks */,
+				A9F2918328D60A910019CB98 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,15 +76,10 @@
 			isa = PBXGroup;
 			children = (
 				A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */,
-				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
-				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
-				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
-				A97084CB28B736A5008EB776 /* SettingsView.swift */,
-				A97084CD28B736B2008EB776 /* CartView.swift */,
-				A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */,
-				A99D1BA528B4757000B7F920 /* ProductStructure.swift */,
-				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
-				A995B77728C44FDB0055B5EE /* BadgeView.swift */,
+				A9B8B5CD28D61AF10006CC22 /* Views */,
+				A9B8B5CE28D61B0F0006CC22 /* Models */,
+				A9B8B5CF28D61B160006CC22 /* ViewModels */,
+				A9B5802E28D601B6002169EA /* GoogleService-Info.plist */,
 				A99D1B9B28B472A000B7F920 /* Assets.xcassets */,
 				A99D1B9D28B472A000B7F920 /* Preview Content */,
 			);
@@ -89,6 +92,36 @@
 				A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A9B8B5CD28D61AF10006CC22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
+				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
+				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
+				A97084CB28B736A5008EB776 /* SettingsView.swift */,
+				A97084CD28B736B2008EB776 /* CartView.swift */,
+				A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */,
+				A995B77728C44FDB0055B5EE /* BadgeView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A9B8B5CE28D61B0F0006CC22 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A99D1BA528B4757000B7F920 /* ProductStructure.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		A9B8B5CF28D61B160006CC22 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +140,11 @@
 			dependencies = (
 			);
 			name = BeautiFoods;
+			packageProductDependencies = (
+				A9F2917E28D60A910019CB98 /* FirebaseAuth */,
+				A9F2918028D60A910019CB98 /* FirebaseFirestore */,
+				A9F2918228D60A910019CB98 /* FirebaseFirestoreSwift */,
+			);
 			productName = BeautiFoods;
 			productReference = A99D1B9428B4729B00B7F920 /* BeautiFoods.app */;
 			productType = "com.apple.product-type.application";
@@ -135,6 +173,9 @@
 				Base,
 			);
 			mainGroup = A99D1B8B28B4729B00B7F920;
+			packageReferences = (
+				A9F2917D28D60A910019CB98 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = A99D1B9528B4729B00B7F920 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -151,6 +192,7 @@
 			files = (
 				A99D1B9F28B472A000B7F920 /* Preview Assets.xcassets in Resources */,
 				A99D1B9C28B472A000B7F920 /* Assets.xcassets in Resources */,
+				A9B5802F28D601B6002169EA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +411,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A9F2917D28D60A910019CB98 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A9F2917E28D60A910019CB98 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9F2917D28D60A910019CB98 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		A9F2918028D60A910019CB98 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9F2917D28D60A910019CB98 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		A9F2918228D60A910019CB98 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9F2917D28D60A910019CB98 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A99D1B8C28B4729B00B7F920 /* Project object */;
 }
