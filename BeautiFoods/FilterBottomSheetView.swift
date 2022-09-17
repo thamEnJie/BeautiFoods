@@ -145,6 +145,7 @@ struct FilterBottomSheetView: View {
                     }.padding(.vertical)
                 }
                 .padding(.horizontal)
+                .padding(.horizontal)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(UIColor.systemBackground))
                 .offset(y: CGFloat(viewOffset))
@@ -171,7 +172,7 @@ struct FilterBottomSheetView: View {
                         }))
                 .onAppear {
                     viewOffset = Int(geometry.size.height)
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.65)){
+                    withAnimation(.spring(response: 0.25, dampingFraction: 0.65)){
                         viewOffset = 0
                     }
                 }
