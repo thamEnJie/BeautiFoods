@@ -18,7 +18,7 @@ struct HomeContentView: View {
     @State var filters = Filter(sorting: .random, productType: [true, true], priceRange: [0,-1])  // -1 means no filtera
     @State var searchProducts: String = ""
     func filterProduct(_ item: Product, filter: Filter) -> Bool {
-        if item.cost <= Double(filter.priceRange[0]) || filter.priceRange[1] == -1 ? false:item.cost >= Double(filter.priceRange[1]) {return false}
+        if (!filter.productType[0] && !filter.productType[1]) || (item.cost <= Double(filter.priceRange[0])) || (filter.priceRange[1] == -1 ? false:item.cost >= Double(filter.priceRange[1])) {return false}
         if item.productType.rawValue == 2 {return true}
         else {return filter.productType[item.productType.rawValue]}
     }

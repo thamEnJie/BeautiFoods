@@ -75,8 +75,7 @@ struct FilterBottomSheetView: View {
                                 }
                             }.padding(1)
                         }
-                    }
-                    .padding(.vertical)
+                    }.padding(.vertical)
                     VStack(alignment: .leading) {
                         Text("Type")
                             .font(.headline)
@@ -174,7 +173,7 @@ struct FilterBottomSheetView: View {
                         viewOffset = 0
                     }
                 }
-            }.edgesIgnoringSafeArea(.top)
+            }.edgesIgnoringSafeArea(.vertical)
                 .onAppear {
                     withAnimation {
                         blur = 2.5
