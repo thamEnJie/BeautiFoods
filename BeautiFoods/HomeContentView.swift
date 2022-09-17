@@ -12,11 +12,16 @@ struct HomeContentView: View {
     @State var viewLoadedAlready = false
     @State var showCartSheet = false
     @State var loadCheckoutView = false
+    
     @State var showFilterCard = false
     @State var backgroundBlur = 0.0
-    
     @State var filters = Filter(sorting: .random, productType: [true, true], priceRange: [0,-1])  // -1 means no filtera
     @State var searchProducts: String = ""
+    func filterProduct(_ item: Product, filter: Filter) -> Bool {
+        if item.cost <= Double(filter.priceRange[0]) || filter.priceRange[1] == -1 ? false:item.cost >= Double(filter.priceRange[1]) {return false}
+        if item.productType.rawValue == 2 {return true}
+        else {return filter.productType[item.productType.rawValue]}
+    }
     
     @StateObject var cartManager = CartItemManager()
     
@@ -73,7 +78,7 @@ struct HomeContentView: View {
                         .frame(height: CGFloat(badgewWidth/2-badgeOffset))
                     LazyVGrid(columns: productColumns, spacing: 20) {
                         ForEach(ProductList, id: \.self) { item in
-                            if searchProducts.isEmpty {
+                            if filterProduct(item, filter: filters) {
                                 ZStack(alignment: .bottom) {
                                     NavigationLink {
                                         ProductContentView(itemIndex: item.productIndex, cartManager: cartManager)
