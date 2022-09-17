@@ -70,7 +70,7 @@ struct FilterBottomSheetView: View {
                                             .cornerRadius(7)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 7)
-                                                    .stroke(filter.sorting == chosenFilter ? .black:.clear, lineWidth: 2)
+                                                    .stroke(filter.sorting == chosenFilter ? Color(UIColor.label):.clear, lineWidth: 2)
                                             )
                                     }
                                     
