@@ -15,6 +15,16 @@ struct FilterBottomSheetView: View {
     
     @State var viewOffset = 0
     
+    func viewIsDisappearing(sheetSize: Double) {
+        withAnimation (.spring(response: 0.3)) {
+            viewOffset = Int(sheetSize/2)
+            blur = 0.0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            isPresented = false
+        }
+    }
+    
     @State var priceRangeHandleOffset: [Double] = [0.0, 0.0]
     let handleSize = 25.0
     @State var sliderWidth = 0.0
@@ -34,13 +44,7 @@ struct FilterBottomSheetView: View {
         GeometryReader { geometry in
             VStack {
                 Button {
-                    withAnimation (.spring(response: 0.3)) {
-                        viewOffset = Int(geometry.size.height/2)
-                        blur = 0.0
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        isPresented = false
-                    }
+                    viewIsDisappearing(sheetSize: geometry.size.height)
                 } label: {
                     Spacer()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -157,13 +161,7 @@ struct FilterBottomSheetView: View {
                     })
                         .onEnded({ dragDistance in
                             if dragDistance.translation.height > CGFloat(geometry.size.height/2*0.4) {
-                                withAnimation (.spring(response: 0.3)) {
-                                    viewOffset = Int(geometry.size.height/2)
-                                    blur = 0.0
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                    isPresented = false
-                                }
+                                viewIsDisappearing(sheetSize: geometry.size.height)
                             } else {
                                 withAnimation (.spring(response: 0.25, dampingFraction: 0.7)) {
                                     viewOffset = 0
