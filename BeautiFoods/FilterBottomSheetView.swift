@@ -40,6 +40,8 @@ struct FilterBottomSheetView: View {
         return price == -1 ? handleEnd:Double(price)/maximumPrice*handleEnd
     }
     
+    @State var presentAlert = false
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -146,6 +148,15 @@ struct FilterBottomSheetView: View {
                             }
                         }
                     }.padding(.vertical)
+                    HStack {
+                        Spacer()
+                        Button(role: .destructive) {
+                            presentAlert = true
+                        } label: {
+                            Text("Reset Filter")
+                        }
+                        Spacer()
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.horizontal)
@@ -177,6 +188,14 @@ struct FilterBottomSheetView: View {
                 .onAppear {
                     withAnimation {
                         blur = 2.5
+                    }
+                }
+                .alert("Reset Filter?", isPresented: $presentAlert) {
+                    Button(role: .destructive) {
+                        filter = Filter(sorting: .random, productType: [true, true], priceRange: [0,0-1])
+                        viewIsDisappearing(sheetSize: geometry.size.height)
+                    } label: {
+                        Text("Reset")
                     }
                 }
         }.background(Color(red: 0, green: 0, blue: 0, opacity: 0.0000000001))
