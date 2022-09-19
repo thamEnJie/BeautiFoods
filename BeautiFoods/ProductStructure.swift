@@ -10,7 +10,7 @@ import Foundation
 struct Product: Hashable, Codable {
     var name: String
     var cost: Double
-    var productType: ProductType
+    var productType: Int
     var imageName: String = "daniel"
     
     var productIndex: Int
@@ -19,13 +19,7 @@ struct Product: Hashable, Codable {
     var isDeprecated: Bool = false
 }
 
-var ProductList: [Product] = [ //replace this with the firebase oner
-    Product(name: "Tomato", cost: 0.10, productType: .both, productIndex: 0),
-    Product(name: "Apple", cost: 0.75, productType: .fruit, productIndex: 1),
-    Product(name: "Lettuce", cost: 0.55, productType: .vegetable, productIndex: 2),
-    Product(name: "Orange", cost: 0.12, productType: .fruit, productIndex: 3),
-    Product(name: "Grape", cost: 10.22, productType: .fruit, productIndex: 4),
-]
+var ProductList: [Product] = []
 
 struct CartItem: Hashable, Codable, Identifiable {
     var id = UUID()

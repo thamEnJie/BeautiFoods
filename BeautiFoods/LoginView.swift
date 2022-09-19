@@ -75,9 +75,34 @@ struct LoginView: View {
                 }
             }.padding().disabled(email.isEmpty||password.isEmpty)
             Button {
-                withAnimation(.easeOut) {
-                    loginState = .anonymous
-                    cartManager.cartItems = []
+                Auth.auth().signInAnonymously() { _, error in
+                    if error == nil {
+                        withAnimation(.easeOut) {
+                            loginState = .anonymous
+                            Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
+                                if let error = error {
+                                    print("Error getting documents: \(error)")
+                                } else {
+                                    ProductList = []
+                                    for document in querySnapshot!.documents {
+                                        ProductList.append(Product(
+                                            name: document.data()["name"] as! String,
+                                                cost: document.data()["cost"] as! Double,
+                                                productType: document.data()["productType"] as! Int,
+                                                productIndex: document.data()["productIndex"] as! Int
+                                            ))
+                                    }
+                                    ProductList.sort{$0.productIndex < $1.productIndex}
+                                    var update: [CartItem] = []
+                                    for i in 0...ProductList.count-1 { update.append(CartItem(productID: i, count: 0)) }
+                                    cartManager.cartItems = update
+                                }
+                            }
+                        }
+                    } else {
+                        alertMessage = error!.localizedDescription
+                        alertPresented = true
+                    }
                 }
             } label: {
                 Text("Continue as Guest")

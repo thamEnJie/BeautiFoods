@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 
 struct MarketContentView: View {
     
@@ -22,8 +23,8 @@ struct MarketContentView: View {
     @State var searchProducts: String = ""
     func filterProduct(_ item: Product, filter: Filter) -> Bool {
         if (!filter.productType[0] && !filter.productType[1]) || (item.cost <= Double(filter.priceRange[0])) || (filter.priceRange[1] == -1 ? false:item.cost >= Double(filter.priceRange[1])) {return false}
-        if item.productType.rawValue == 2 {return true}
-        else {return filter.productType[item.productType.rawValue]}
+        if item.productType == 2 {return true}
+        else {return filter.productType[item.productType]}
     }
     
     @StateObject var cartManager = CartItemManager()
@@ -155,18 +156,34 @@ struct MarketContentView: View {
                         CartView(cartManager: cartManager, openCheckout: $loadCheckoutView)
                     }
                     .onAppear {
-                        if !viewLoadedAlready{
-                            let old = cartManager.cartItems
-                            var update: [CartItem] = []
-                            for i in 0...ProductList.count-1 {
-                                if let updatedIndex = old.firstIndex(where: { $0.productID == i }) {
-                                    update.append(CartItem(productID: i, count: old[updatedIndex].count))
+                        if !viewLoadedAlready {
+                            Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
+                                if let error = error {
+                                    print("Error getting documents: \(error)")
                                 } else {
-                                    update.append(CartItem(productID: i, count: 0))
+                                    ProductList = []
+                                    for document in querySnapshot!.documents {
+                                        ProductList.append(Product(
+                                            name: document.data()["name"] as! String,
+                                            cost: document.data()["cost"] as! Double,
+                                            productType: document.data()["productType"] as! Int,
+                                            productIndex: document.data()["productIndex"] as! Int
+                                        ))
+                                    }
+                                    ProductList.sort{$0.productIndex < $1.productIndex}
+                                    let old = cartManager.cartItems
+                                    var update: [CartItem] = []
+                                    for i in 0...ProductList.count-1 {
+                                        if let updatedIndex = old.firstIndex(where: { $0.productID == i }) {
+                                            update.append(CartItem(productID: i, count: old[updatedIndex].count))
+                                        } else {
+                                            update.append(CartItem(productID: i, count: 0))
+                                        }
+                                    }
+                                    cartManager.cartItems = update
+                                    viewLoadedAlready = true
                                 }
                             }
-                            cartManager.cartItems = update
-                            viewLoadedAlready = true
                         }
                     }
                 }

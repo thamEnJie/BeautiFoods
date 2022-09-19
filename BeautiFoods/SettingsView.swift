@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 
 struct SettingsView: View {
     
@@ -96,6 +97,8 @@ extension UIPickerView {
 struct NotificationSettingsView: View {
     
     let loginState: LoginState
+    
+    let firestoreDB = Firestore.firestore()
     
     @State var repeatedSelectionEnabled: Bool = false
     let timeSelectionCountRanges: [Int] = [28,4,12]
