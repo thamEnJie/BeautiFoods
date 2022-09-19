@@ -24,12 +24,10 @@ struct SettingsView: View {
                     Text(Auth.auth().currentUser?.email ?? "Failed to retrieve this account's email.")
                 }
                 Button {
-                    if loginState == .loggedIn {
-                        do {
-                            try Auth.auth().signOut()
-                        } catch let signOutError as NSError {
-                            print("Error signing out: %@", signOutError)
-                        }
+                    do {
+                        try Auth.auth().signOut()
+                    } catch let signOutError as NSError {
+                        print("Error signing out: %@", signOutError)
                     }
                     withAnimation {
                         loginState = .notLoggedIn

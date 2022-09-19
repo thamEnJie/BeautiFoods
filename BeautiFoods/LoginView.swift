@@ -20,6 +20,7 @@ struct LoginView: View {
     @State var email = ""
     @State var password = ""
     
+    @State var isProcessingGuest = false
     @State var isProcessingLogin = false
     @State var alertPresented = false
     @State var alertMessage = ""
@@ -75,11 +76,13 @@ struct LoginView: View {
                 }
             }.padding().disabled(email.isEmpty||password.isEmpty)
             Button {
+                isProcessingGuest = true
                 Auth.auth().signInAnonymously() { _, error in
                     if error == nil {
                         withAnimation(.easeOut) {
                             loginState = .anonymous
                             Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
+                                isProcessingGuest = false
                                 if let error = error {
                                     print("Error getting documents: \(error)")
                                 } else {
@@ -105,7 +108,14 @@ struct LoginView: View {
                     }
                 }
             } label: {
-                Text("Continue as Guest")
+                if !isProcessingGuest {
+                    Text("Continue as Guest")
+                } else {
+                    HStack {
+                        ProgressView()
+                        Text("Creating Guest Account")
+                    }.foregroundColor(.primary)
+                }
             }.padding().padding(.top)
         }.padding(.horizontal).padding(.horizontal)
             .alert("Error", isPresented: $alertPresented) {} message: {

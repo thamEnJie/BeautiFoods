@@ -140,8 +140,14 @@ struct MarketContentView: View {
                                 }
                             } else {
                                 Button {
-                                    withAnimation(.easeIn) {
-                                        loginState = .notLoggedIn
+                                    Auth.auth().currentUser!.delete { error in
+                                        if let error = error {
+                                            print(error)
+                                        } else {
+                                            withAnimation(.easeIn) {
+                                                loginState = .notLoggedIn
+                                            }
+                                        }
                                     }
                                 } label: {
                                     VStack {
@@ -198,7 +204,7 @@ struct MarketContentView: View {
         }.onAppear {
             if Auth.auth().currentUser?.uid == nil {
                 loginState = loginState == .anonymous ? .anonymous:.notLoggedIn
-            } else if loginState != .loggedIn { loginState = .loggedIn }
+            } else if loginState != .loggedIn { loginState = Auth.auth().currentUser!.isAnonymous ? .anonymous:.loggedIn }
         }
     }
 }
