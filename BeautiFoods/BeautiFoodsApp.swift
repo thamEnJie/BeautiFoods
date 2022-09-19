@@ -23,7 +23,7 @@ struct BeautiFoodsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeContentView()
+            MarketContentView()
         }
     }
 }

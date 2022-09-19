@@ -12,12 +12,15 @@
 		A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CF28B73D63008EB776 /* CartPersistence.swift */; };
 		A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A997157328D174D3003B69DC /* FilterBottomSheetView.swift */; };
 		A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */; };
-		A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* HomeContentView.swift */; };
+		A99D1B9A28B4729B00B7F920 /* MarketContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* MarketContentView.swift */; };
 		A99D1B9C28B472A000B7F920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9B28B472A000B7F920 /* Assets.xcassets */; };
 		A99D1B9F28B472A000B7F920 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */; };
 		A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA528B4757000B7F920 /* ProductStructure.swift */; };
 		A99D1BA828B4784600B7F920 /* ProductContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1BA728B4784600B7F920 /* ProductContentView.swift */; };
 		A9B5802F28D601B6002169EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9B5802E28D601B6002169EA /* GoogleService-Info.plist */; };
+		A9B8B5DF28D7194F0006CC22 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B8B5DE28D7194F0006CC22 /* StartView.swift */; };
+		A9B8B5E128D719590006CC22 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B8B5E028D719590006CC22 /* LoginView.swift */; };
+		A9B8B5E328D719680006CC22 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B8B5E228D719680006CC22 /* SignUpView.swift */; };
 		A9C96FC428CED90000D8EA14 /* CheckoutPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */; };
 		A9F2917F28D60A910019CB98 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A9F2917E28D60A910019CB98 /* FirebaseAuth */; };
 		A9F2918128D60A910019CB98 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A9F2918028D60A910019CB98 /* FirebaseFirestore */; };
@@ -31,12 +34,15 @@
 		A997157328D174D3003B69DC /* FilterBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBottomSheetView.swift; sourceTree = "<group>"; };
 		A99D1B9428B4729B00B7F920 /* BeautiFoods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautiFoods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautiFoodsApp.swift; sourceTree = "<group>"; };
-		A99D1B9928B4729B00B7F920 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
+		A99D1B9928B4729B00B7F920 /* MarketContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketContentView.swift; sourceTree = "<group>"; };
 		A99D1B9B28B472A000B7F920 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A99D1B9E28B472A000B7F920 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A99D1BA528B4757000B7F920 /* ProductStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductStructure.swift; sourceTree = "<group>"; };
 		A99D1BA728B4784600B7F920 /* ProductContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductContentView.swift; sourceTree = "<group>"; };
 		A9B5802E28D601B6002169EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A9B8B5DE28D7194F0006CC22 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		A9B8B5E028D719590006CC22 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A9B8B5E228D719680006CC22 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A9C96FC328CED90000D8EA14 /* CheckoutPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,7 +83,6 @@
 				A9B8B5CD28D61AF10006CC22 /* Views */,
 				A9B8B5CE28D61B0F0006CC22 /* Models */,
 				A9B8B5D328D620D10006CC22 /* ViewModels */,
-				A9B5802E28D601B6002169EA /* GoogleService-Info.plist */,
 				A99D1B9B28B472A000B7F920 /* Assets.xcassets */,
 				A99D1B9D28B472A000B7F920 /* Preview Content */,
 			);
@@ -95,9 +100,10 @@
 		A9B8B5CD28D61AF10006CC22 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A9B8B5DD28D719350006CC22 /* Start */,
 				A9B8B5D128D61F9A0006CC22 /* Market */,
-				A97084CB28B736A5008EB776 /* SettingsView.swift */,
 				A9B8B5D228D61FB70006CC22 /* Buy */,
+				A9B8B5D428D6217D0006CC22 /* Misc */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -105,6 +111,7 @@
 		A9B8B5CE28D61B0F0006CC22 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A9B5802E28D601B6002169EA /* GoogleService-Info.plist */,
 				A99D1BA528B4757000B7F920 /* ProductStructure.swift */,
 			);
 			name = Models;
@@ -113,7 +120,7 @@
 		A9B8B5D128D61F9A0006CC22 /* Market */ = {
 			isa = PBXGroup;
 			children = (
-				A99D1B9928B4729B00B7F920 /* HomeContentView.swift */,
+				A99D1B9928B4729B00B7F920 /* MarketContentView.swift */,
 				A997157328D174D3003B69DC /* FilterBottomSheetView.swift */,
 				A99D1BA728B4784600B7F920 /* ProductContentView.swift */,
 			);
@@ -135,6 +142,24 @@
 				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A9B8B5D428D6217D0006CC22 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				A97084CB28B736A5008EB776 /* SettingsView.swift */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		A9B8B5DD28D719350006CC22 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				A9B8B5DE28D7194F0006CC22 /* StartView.swift */,
+				A9B8B5E028D719590006CC22 /* LoginView.swift */,
+				A9B8B5E228D719680006CC22 /* SignUpView.swift */,
+			);
+			name = Start;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,12 +242,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9C96FC428CED90000D8EA14 /* CheckoutPageView.swift in Sources */,
+				A9B8B5DF28D7194F0006CC22 /* StartView.swift in Sources */,
 				A97084CE28B736B2008EB776 /* CartView.swift in Sources */,
-				A99D1B9A28B4729B00B7F920 /* HomeContentView.swift in Sources */,
+				A99D1B9A28B4729B00B7F920 /* MarketContentView.swift in Sources */,
 				A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */,
 				A99D1BA828B4784600B7F920 /* ProductContentView.swift in Sources */,
+				A9B8B5E328D719680006CC22 /* SignUpView.swift in Sources */,
 				A99D1BA628B4757000B7F920 /* ProductStructure.swift in Sources */,
 				A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */,
+				A9B8B5E128D719590006CC22 /* LoginView.swift in Sources */,
 				A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */,
 				A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */,
 			);
@@ -355,6 +383,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"BeautiFoods/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeautiFoods/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -383,6 +412,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"BeautiFoods/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeautiFoods/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
