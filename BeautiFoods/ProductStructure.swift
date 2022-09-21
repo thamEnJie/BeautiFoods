@@ -11,7 +11,7 @@ struct Product: Hashable, Codable {
     var name: String
     var cost: Double
     var productType: Int
-    var imageName: String = "daniel"
+    var imageName: String = "AppLogo"
     
     var productIndex: Int
     

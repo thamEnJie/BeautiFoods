@@ -91,6 +91,7 @@ struct MarketContentView: View {
                                                 VStack {
                                                     Image(item.imageName)
                                                         .resizable()
+                                                        .cornerRadius(10)
                                                         .scaledToFit()
                                                     Text(item.name)
                                                     Text("$"+String(format: "%.2f", item.cost))
