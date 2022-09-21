@@ -13,7 +13,7 @@ struct CheckoutPageView: View {
     
     let firestoreDB = Firestore.firestore()
     
-    var checkoutItems: [CartItem]
+    @State var checkoutItems: [CartItem]
     
     var body: some View {
         VStack {
@@ -31,7 +31,6 @@ struct CheckoutPageView: View {
                     } else {
                         print("Document added with ID: \(writeRef!.documentID)")
                         for cartItem in checkoutItems {
-                            print(cartItem.dictionary)
                             firestoreDB.collection("orders").document("\(writeRef!.documentID)").collection("cart").document("\(ProductList[cartItem.productID].name) [\(cartItem.count)]").setData(cartItem.dictionary) { err in
                                 if let err = err {
                                     print("Error writing document: \(err)")
