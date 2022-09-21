@@ -125,7 +125,7 @@ struct SettingsView: View {
                 NavigationLink {
                 } label: {
                     HStack {
-                        Text("Credit Card Details")
+                        Text("Billing")
                     }
                 }
             }
