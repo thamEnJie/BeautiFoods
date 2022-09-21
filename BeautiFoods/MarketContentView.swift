@@ -118,7 +118,7 @@ struct MarketContentView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             NavigationLink  {
-                                SettingsView(loginState: $loginState).navigationTitle("Preferences")
+                                SettingsView(loginState: $loginState, cartManager: cartManager).navigationTitle("Preferences")
                             } label: {
                                 VStack {
                                     Image(systemName: "gear")

@@ -13,6 +13,8 @@ struct SettingsView: View {
     
     @Binding var loginState: LoginState
     
+    @ObservedObject var cartManager: CartItemManager
+    
     @State var showMoreAccActions: Bool = false
     @State var resetPasswordSheetShown: Bool = false
     @State var deleteAccAlertShown: Bool = false
@@ -70,7 +72,7 @@ struct SettingsView: View {
             }
             Section("Shop") {
                 NavigationLink {
-                    NotificationSettingsView(loginState: loginState).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
+                    NotificationSettingsView(loginState: loginState, cartManager: cartManager).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
                 } label: {
                     HStack {
                         Text("Notifications and Lists")
@@ -98,6 +100,9 @@ struct NotificationSettingsView: View {
     
     let firestoreDB = Firestore.firestore()
     
+    @ObservedObject var cartManager: CartItemManager
+    
+    @State var addShoppingListSheetShown: Bool = false
     @State var repeatedSelectionEnabled: Bool = false
     let timeSelectionCountRanges: [Int] = [28,4,12]
     @State var timeSelectionCountIndex: Int = 0
@@ -107,11 +112,120 @@ struct NotificationSettingsView: View {
     
     @State var showInfo: Bool = false
     
+    @State var tempShoppingList: [CartItem] = []
+    @State var tempShoppingListName: String = ""
+    @State var listsOfShoppingListsName: [String] = []
+    @State var listsOfShoppingLists = []
+    @State var listsUpdated = false
+    
     var body: some View {
         Form {
-            Section("Lists") {
-                
+            Section("Shopping Lists") {
+                ForEach(listsOfShoppingListsName, id: \.self) { listName in
+                    HStack {
+                        Text(listName)
+                        Spacer()
+                        Button {
+//                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
+//                                cartManager.cartItems[i.productID].count += i.count
+//                            }
+                        } label: {
+                            Image(systemName: "cart.badge.plus")
+                        }
+                        Button {
+//                            cartManager.cartItems = cartManager.cartItems.map{CartItem(id: $0.id, productID: $0.productID, count: 0)}
+//                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
+//                                cartManager.cartItems[i.productID].count = i.count
+//                            }
+                        } label: {
+                            Image(systemName: "cart.fill")
+                        }
+                    }.buttonStyle(.borderless).swipeActions {
+                        Button(role: .destructive) {
+                            //
+                        } label: {
+                            Text("Delete List")
+                        }
+
+                    }
+                }
+                Button {
+                    addShoppingListSheetShown = true
+                } label: {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Add a Shopping List")
+                    }.padding(.leading)
+                }
             }.disabled(loginState != .loggedIn)
+                .onAppear {
+                    if !listsUpdated {
+                        firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("Error getting documents: \(err)")
+                            } else {
+                                listsOfShoppingLists = []
+                                for doc in querySnapshot!.documents {
+                                    listsOfShoppingListsName.append("\(doc.documentID)")
+                                    firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(doc.documentID)").collection("\(doc.documentID)").getDocuments() { (CquerySnapshot, Cerr) in
+                                        if let Cerr = Cerr {
+                                            print("Error getting documents: \(Cerr)")
+                                        } else {
+                                            var temp: [[String:Any]] = []
+                                            for document in CquerySnapshot!.documents {
+                                                temp.append(document.data())
+                                            }
+                                            listsOfShoppingLists.append(temp.map{CartItem(productID: $0["productID"] as! Int, count: $0["count"] as! Int)})
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        listsUpdated = true
+                    }
+                }
+                .sheet(isPresented: $addShoppingListSheetShown) {
+                VStack {
+                    TextField("Enter Name of List Here", text: $tempShoppingListName).font(.title).textFieldStyle(.roundedBorder).padding([.horizontal, .top])
+                    List {
+                        ForEach(tempShoppingList, id: \.self) { item in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(ProductList[item.productID].name)
+                                    Text("$"+String(format: "%.2f", ProductList[item.productID].cost)).padding(.leading).font(Font.caption)
+                                }
+                                Spacer()
+                                Button {
+                                    if item.count >= 1 { tempShoppingList[item.productID].count -= 1 }
+                                } label: {
+                                    Image(systemName: "minus")
+                                }
+                                Text(String(item.count))
+                                Button {
+                                    tempShoppingList[item.productID].count += 1
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
+                            }
+                        }
+                    }.buttonStyle(.borderless)
+                    Spacer()
+                    Button {
+                        tempShoppingList = tempShoppingList.filter{$0.count > 0}
+                        for shopItem in tempShoppingList {
+                            firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").collection("\(tempShoppingListName)").document("\(ProductList[shopItem.productID].name)").setData(shopItem.dictionary)
+                        }
+                        firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").setData(["listName":"\(tempShoppingListName)"])
+                        addShoppingListSheetShown = false
+                        listsUpdated = false
+                    } label: {
+                        Text("Add to Lists")
+                    }.padding(.top).disabled(tempShoppingListName == "")
+                }.onAppear {
+                    tempShoppingList = []
+                    for i in 0...ProductList.count-1 { tempShoppingList.append(CartItem(productID: i, count: 0)) }
+                }
+            }
             Section("Notifications") {
                 HStack {
                     Toggle(isOn: $repeatedSelectionEnabled.animation(.spring())) {
@@ -167,12 +281,12 @@ struct CreditDetailsView: View {
 
 struct SettingsContentsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(loginState: .constant(.loggedIn))
+        SettingsView(loginState: .constant(.loggedIn), cartManager: CartItemManager())
     }
 }
 
 struct NotificationSettings_Previews: PreviewProvider {
-    static var previews: some View { NotificationSettingsView(loginState: .loggedIn) }
+    static var previews: some View { NotificationSettingsView(loginState: .loggedIn, cartManager: CartItemManager()) }
 }
 struct CreditDetails_Prevews: PreviewProvider {
     static var previews: some View { CreditDetailsView() }
