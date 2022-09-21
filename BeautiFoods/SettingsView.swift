@@ -16,8 +16,12 @@ struct SettingsView: View {
     @ObservedObject var cartManager: CartItemManager
     
     @State var showMoreAccActions: Bool = false
-    @State var resetPasswordSheetShown: Bool = false
+    @State var resetPasswordAlertShown: Bool = false
+    
     @State var deleteAccAlertShown: Bool = false
+    @State var emailConfirm: String = ""
+    @State var passwordConfirm: String = ""
+    @State var deleteConfirm: Bool = false
     
     var body: some View {
         Form {
@@ -51,12 +55,23 @@ struct SettingsView: View {
                     }
                     if showMoreAccActions {
                         Button(role: .destructive) {
-                            resetPasswordSheetShown = true
+                            resetPasswordAlertShown = true
                         } label: {
                             Text("Reset Password").padding(.leading)
                         }.disabled(Auth.auth().currentUser?.uid == nil)
-                            .sheet(isPresented: $resetPasswordSheetShown) {
-                                //
+                            .alert("Reset Password?", isPresented: $resetPasswordAlertShown) {
+                                Button(role: .cancel) {} label: { Text("Cancel") }
+                                Button {
+                                    Auth.auth().sendPasswordReset(withEmail: Auth.auth().currentUser!.email!) { error in
+                                        if let error = error {
+                                            print(error)
+                                        }
+                                    }
+                                } label: {
+                                    Text("OK")
+                                }
+                            } message: {
+                                Text("An Email will be sent to \(Auth.auth().currentUser!.email!) to reset your password.")
                             }
                         Button(role: .destructive) {
                             deleteAccAlertShown = true
@@ -64,9 +79,38 @@ struct SettingsView: View {
                             Text("Delete Account").padding(.leading)
                         }.disabled(Auth.auth().currentUser?.uid == nil)
                             .sheet(isPresented: $deleteAccAlertShown) {
-                                //
+                                VStack {
+                                    Spacer()
+                                    Text("Delete Account").bold().font(Font.largeTitle)
+                                    Spacer()
+                                    HStack {
+                                        Image(systemName: "envelope")
+                                        TextField("Email", text: $emailConfirm)
+                                            .modifier(CustomInputField(contentType: .emailAddress))
+                                    }.padding(.vertical)
+                                    HStack {
+                                        Image(systemName: "key").rotationEffect(.degrees(-45))
+                                        SecureField("Password", text: $passwordConfirm)
+                                            .modifier(CustomInputField(contentType: .password))
+                                    }.padding(.vertical)
+                                    Spacer()
+                                    Spacer()
+                                    HStack {
+                                        Button(role: .destructive) {
+                                            //delete from firestore database
+                                            //re-auth
+                                            //delete account
+                                        } label: {
+                                            Text("Delete Account")
+                                        }.disabled(!deleteConfirm || emailConfirm != Auth.auth().currentUser!.email!) // also confirm password using reauth
+                                        Button {
+                                            deleteConfirm.toggle()
+                                        } label: {
+                                            Image(systemName: deleteConfirm ? "checkmark.square":"xmark.square")
+                                        }
+                                    }
+                                }.padding(.horizontal).padding(.horizontal)
                             }
-
                     }
                 }
             }
