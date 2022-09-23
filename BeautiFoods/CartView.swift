@@ -20,6 +20,13 @@ struct CartView: View {
         }
         return total
     }
+    func countCart(_ cartM: CartItemManager) -> Int {
+        var a = 0
+        for i in cartM.cartItems {
+            a += i.count
+        }
+        return a
+    }
     
     @State var isRemoveItemAlertPresented: Bool = false
     @State var removeItem: CartItem?
@@ -29,7 +36,7 @@ struct CartView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("$\(String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager)))")
+                Text("$\(String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager))) (\(countCart(cartManager)) Items)")
                     .font(Font.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.primaryLabel)
