@@ -22,6 +22,7 @@ struct SettingsView: View {
     @State var deleteAccAlertShown: Bool = false
     @State var emailConfirm: String = ""
     @State var passwordConfirm: String = ""
+    @State var deleteErrorText: String = ""
     @State var deleteConfirm: Bool = false
     
     var body: some View {
@@ -97,14 +98,51 @@ struct SettingsView: View {
                                         }.padding(.vertical)
                                         Spacer()
                                         Spacer()
+                                        if deleteErrorText != "" { Text(deleteErrorText).foregroundColor(.red) }
                                         HStack {
                                             Button(role: .destructive) {
-                                                //delete from firestore database
-                                                //re-auth
-                                                //delete account
+                                                if let user = Auth.auth().currentUser {
+                                                    let credential = EmailAuthProvider.credential(withEmail: emailConfirm, password: passwordConfirm)
+                                                    user.reauthenticate(with: credential) { _, error in
+                                                        if let error = error {
+                                                            deleteErrorText = error.localizedDescription
+                                                        } else {
+                                                            let userFS = Firestore.firestore().collection("users").document(user.uid)
+                                                            userFS.collection("lists").getDocuments() { (listDocQuery, err) in
+                                                                if let err = err {
+                                                                    deleteErrorText = err.localizedDescription
+                                                                } else {
+                                                                    for listDoc in listDocQuery!.documents {
+                                                                        userFS.collection("lists").document("\(listDoc.documentID)").collection("\(listDoc.documentID)").getDocuments() { (listItemsDocQuery, itemsError) in
+                                                                            if let itemsError = itemsError {
+                                                                                deleteErrorText = itemsError.localizedDescription
+                                                                            } else {
+                                                                                for listItemDoc in listItemsDocQuery!.documents {
+                                                                                    userFS.collection("lists").document("\(listDoc.documentID)").collection("\(listDoc.documentID)").document("\(listItemDoc.documentID)").delete() { listItemDelErr in
+                                                                                        if let listItemDelErr = listItemDelErr { deleteErrorText = listItemDelErr.localizedDescription }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        userFS.collection("lists").document("\(listDoc.documentID)").delete() { listDelErr in
+                                                                            if let listDelErr = listDelErr { deleteErrorText = listDelErr.localizedDescription }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            userFS.delete() { deleteErr in
+                                                                if let deleteErr = deleteErr { deleteErrorText = deleteErr.localizedDescription }
+                                                            }
+                                                            user.delete { err in
+                                                                if let err = err { deleteErrorText = err.localizedDescription }
+                                                            }
+                                                            loginState = .notLoggedIn
+                                                        }
+                                                    }
+                                                }
                                             } label: {
                                                 Text("Delete Account")
-                                            }.disabled(!deleteConfirm || emailConfirm != Auth.auth().currentUser!.email!) // also confirm password using reauth
+                                            }.disabled(!deleteConfirm || emailConfirm != Auth.auth().currentUser!.email!)
                                             Button {
                                                 deleteConfirm.toggle()
                                             } label: {
