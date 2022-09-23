@@ -101,7 +101,7 @@ struct MarketContentView: View {
                         ScrollView(.vertical, showsIndicators: true) {
                             LazyVGrid(columns: productColumns, spacing: 20) {
                                 ForEach(sortedProductList, id: \.self) { item in
-                                    if filterProduct(item, filter: filters) && searchProducts == "" ? true:item.name.lowercased().contains(searchProducts.lowercased()) && item.name != "Test Item" && !item.isDeprecated {
+                                    if filterProduct(item, filter: filters) && (searchProducts == "" ? true:item.name.lowercased().contains(searchProducts.lowercased())) && item.name != "Test Item" && !item.isDeprecated {
                                         ZStack(alignment: .bottom) {
                                             NavigationLink {
                                                 ProductContentView(itemIndex: item.productIndex, cartManager: cartManager, productListManager: productListManager)
@@ -212,7 +212,7 @@ struct MarketContentView: View {
 func retrieveProductList(updateCartItems: Bool, productListManager: ProductManager, CartManager cartManager: CartItemManager) {
     Firestore.firestore().collection("ProductList").document("testItem").getDocument() { (testDoc, err) in
         if let testDoc = testDoc, testDoc.exists {
-            if (productListManager.productList == [] ? true:(testDoc.data()!["productListVersion"] as! Double != 0.0)) {
+            if (productListManager.productList == [] ? true:(testDoc.data()!["productListVersion"] as! Double != productListManager.productList[0].cost)) {
                 Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error)")
@@ -220,10 +220,12 @@ func retrieveProductList(updateCartItems: Bool, productListManager: ProductManag
                         productListManager.productList = []
                         for document in querySnapshot!.documents {
                             productListManager.productList.append(Product(
-                                name: document.data()["name"] as! String,
+                                name: document.data()["name"] as? String ?? "ProductNameError",
                                 cost: (document.data()["name"] as! String == "Test Item") ? (document.data()["productListVersion"] as! Double):(document.data()["cost"] as! Double),
-                                productType: document.data()["productType"] as! Int,
-                                productIndex: document.data()["productIndex"] as! Int
+                                productType: document.data()["productType"] as? Int ?? 2,
+                                imageName: document.data()["imageName"] as? String ?? "AppLogo",
+                                productIndex: document.data()["productIndex"] as! Int,
+                                isDeprecated: document.data()["isDeprecated"] as? Bool ?? false
                             ))
                         }
                         productListManager.productList.sort{$0.productIndex < $1.productIndex}
