@@ -49,7 +49,8 @@ enum ProductType: Int, Codable{
 
 enum SortType: String, CaseIterable, Codable, Identifiable {
     case random = "Random"
-    case alphabetical = "Alphabetical"
+    case az = "A - Z"
+    case za = "Z - A"
     case priceAscending = "Price Ascending"
     case priceDescending = "Price Descending"
     //case popularity = "Popularity"
