@@ -28,6 +28,6 @@ struct ProductContentView: View {
 
 struct ProductContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductContentView(itemIndex: 0, cartManager: CartItemManager())
+        ProductContentView(itemIndex: 0, cartManager: CartItemManager(), productListManager: ProductManager())
     }
 }

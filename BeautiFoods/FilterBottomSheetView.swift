@@ -209,6 +209,6 @@ struct FilterBottomSheetView: View {
 
 struct FilterBottomSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        FilterBottomSheetView(isPresented: .constant(true), filter: .constant(Filter(sorting: .random, productType: [true, true], priceRange: [0,-1])), blur: .constant(0))
+        FilterBottomSheetView(productListManager: ProductManager(), isPresented: .constant(true), filter: .constant(Filter(sorting: .random, productType: [true, true], priceRange: [0,-1])), blur: .constant(0))
     }
 }
