@@ -187,13 +187,14 @@ struct MarketContentView: View {
                             retrieveProductList(updateCartItems: true, productListManager: ProductManager(), CartManager: cartManager)
                             viewLoadedAlready = true
                         }
-                    }.background(Color.backgroundColour)
+                    }
+                    .background(Color.backgroundColour)
                 }
                 .overlay {
                     if showFilterCard {
                         FilterBottomSheetView(productListManager: productListManager, isPresented: $showFilterCard, filter: $filters, blur: $backgroundBlur)
                             .onDisappear {
-                                if prevSort != filters.sorting { sortedProductList = sortProducts() }
+                                if prevSort != filters.sorting { withAnimation(.spring()) { sortedProductList = sortProducts() } }
                                 prevSort = filters.sorting
                             }
                     }
