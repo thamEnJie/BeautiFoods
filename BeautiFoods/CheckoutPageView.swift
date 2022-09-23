@@ -13,6 +13,8 @@ struct CheckoutPageView: View {
     
     let firestoreDB = Firestore.firestore()
     
+    @ObservedObject var productListManager: ProductManager
+    
     @State var checkoutItems: [CartItem]
     
     var body: some View {
@@ -31,7 +33,7 @@ struct CheckoutPageView: View {
                     } else {
                         print("Document added with ID: \(writeRef!.documentID)")
                         for cartItem in checkoutItems {
-                            firestoreDB.collection("orders").document("\(writeRef!.documentID)").collection("cart").document("\(ProductList[cartItem.productID].name) [\(cartItem.count)]").setData(cartItem.dictionary) { err in
+                            firestoreDB.collection("orders").document("\(writeRef!.documentID)").collection("cart").document("\(productListManager.productList[cartItem.productID].name) [\(cartItem.count)]").setData(cartItem.dictionary) { err in
                                 if let err = err {
                                     print("Error writing document: \(err)")
                                 } else {
@@ -50,6 +52,6 @@ struct CheckoutPageView: View {
 
 struct CheckoutPageView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutPageView(checkoutItems: CartItemManager().cartItems)
+        CheckoutPageView(productListManager: ProductManager(), checkoutItems: CartItemManager().cartItems)
     }
 }

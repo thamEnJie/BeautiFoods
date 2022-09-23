@@ -10,12 +10,13 @@ import SwiftUI
 struct CartView: View {
     
     @ObservedObject var cartManager: CartItemManager
+    @ObservedObject var productListManager: ProductManager
     @Binding var openCheckout: Bool
     
-    func totalCost(_ cartM: CartItemManager) -> Double {
+    func totalCost(cartM: CartItemManager, productM: ProductManager) -> Double {
         var total = 0.0
         for j in cartM.cartItems {
-            total += Double(j.count)*ProductList[j.productID].cost
+            total += Double(j.count)*productM.productList[j.productID].cost
         }
         return total
     }
@@ -28,7 +29,7 @@ struct CartView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("$\(String(format: "%.2f", totalCost(cartManager)))")
+                Text("$\(String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager)))")
                     .font(Font.largeTitle)
                     .fontWeight(.bold)
                     .padding()
@@ -36,7 +37,7 @@ struct CartView: View {
             }
             List {
                 Group {
-                    if String(format: "%.2f", totalCost(cartManager)) == "0.00" {
+                    if String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager)) == "0.00" {
                         HStack {
                             Spacer()
                             Button {
@@ -59,7 +60,7 @@ struct CartView: View {
                     } else {
                         ForEach(cartManager.cartItems) { i in
                             if i.count > 0 {
-                                let item = ProductList[i.productID]
+                                let item = productListManager.productList[i.productID]
                                 HStack {
                                     VStack {
                                         HStack {
@@ -112,7 +113,7 @@ struct CartView: View {
                 }.listRowBackground(Color.backgroundColour)
             }.onAppear{ UITableView.appearance().backgroundColor = UIColor(Color.secondaryBackgroundColour) }
             .buttonStyle(.borderless)
-            if String(format: "%.2f", totalCost(cartManager)) != "0.00" {
+            if String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager)) != "0.00" {
                 Button {
                     openCheckout = true
                     presentationMode.wrappedValue.dismiss()
@@ -136,7 +137,7 @@ struct CartView: View {
                 Text("Remove")
             }
         } message: { item in
-            Text("Remove all '\(ProductList[item.productID].name)' from Cart? You can add it again in the home page.")
+            Text("Remove all '\(productListManager.productList[item.productID].name)' from Cart? You can add it again in the home page.")
         }
         
     }
@@ -144,6 +145,6 @@ struct CartView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView(cartManager: CartItemManager(), openCheckout: .constant(false))
+        CartView(cartManager: CartItemManager(), productListManager: ProductManager(), openCheckout: .constant(false))
     }
 }

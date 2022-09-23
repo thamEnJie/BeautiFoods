@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Binding var loginState: LoginState
     
     @ObservedObject var cartManager: CartItemManager
+    @ObservedObject var productListManager: ProductManager
     
     @State var showMoreAccActions: Bool = false
     @State var resetPasswordAlertShown: Bool = false
@@ -117,7 +118,7 @@ struct SettingsView: View {
                 }
                 Section("Shop") {
                     NavigationLink {
-                        NotificationSettingsView(loginState: loginState, cartManager: cartManager).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
+                        NotificationSettingsView(loginState: loginState, cartManager: cartManager, productListManager: productListManager).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
                     } label: {
                         HStack {
                             Text("Notifications and Lists")
@@ -147,6 +148,7 @@ struct NotificationSettingsView: View {
     let firestoreDB = Firestore.firestore()
     
     @ObservedObject var cartManager: CartItemManager
+    @ObservedObject var productListManager: ProductManager
     
     @State var addShoppingListSheetShown: Bool = false
     @State var repeatedSelectionEnabled: Bool = false
@@ -212,8 +214,8 @@ struct NotificationSettingsView: View {
                                 ForEach(tempShoppingList, id: \.self) { item in
                                     HStack {
                                         VStack(alignment: .leading) {
-                                            Text(ProductList[item.productID].name)
-                                            Text("$"+String(format: "%.2f", ProductList[item.productID].cost)).padding(.leading).font(Font.caption)
+                                            Text(productListManager.productList[item.productID].name)
+                                            Text("$"+String(format: "%.2f", productListManager.productList[item.productID].cost)).padding(.leading).font(Font.caption)
                                         }
                                         Spacer()
                                         Button {
@@ -234,7 +236,7 @@ struct NotificationSettingsView: View {
                             Button {
                                 tempShoppingList = tempShoppingList.filter{$0.count > 0}
                                 for shopItem in tempShoppingList {
-                                    firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").collection("\(tempShoppingListName)").document("\(ProductList[shopItem.productID].name)").setData(shopItem.dictionary)
+                                    firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").collection("\(tempShoppingListName)").document("\(productListManager.productList[shopItem.productID].name)").setData(shopItem.dictionary)
                                 }
                                 firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").setData(["listName":"\(tempShoppingListName)"])
                                 addShoppingListSheetShown = false
@@ -245,7 +247,7 @@ struct NotificationSettingsView: View {
                         }.background(Color.backgroundColour)
                             .onAppear {
                                 tempShoppingList = []
-                                for i in 0...ProductList.count-1 { tempShoppingList.append(CartItem(productID: i, count: 0)) }
+                                for i in 0...productListManager.productList.count-1 { tempShoppingList.append(CartItem(productID: i, count: 0)) }
                             }
                     }
                     .onAppear {
@@ -330,12 +332,12 @@ struct CreditDetailsView: View {
 
 struct SettingsContentsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(loginState: .constant(.loggedIn), cartManager: CartItemManager())
+        SettingsView(loginState: .constant(.loggedIn), cartManager: CartItemManager(), productListManager: ProductManager())
     }
 }
 
 struct NotificationSettings_Previews: PreviewProvider {
-    static var previews: some View { NotificationSettingsView(loginState: .loggedIn, cartManager: CartItemManager()) }
+    static var previews: some View { NotificationSettingsView(loginState: .loggedIn, cartManager: CartItemManager(), productListManager: ProductManager()) }
 }
 struct CreditDetails_Prevews: PreviewProvider {
     static var previews: some View { CreditDetailsView() }

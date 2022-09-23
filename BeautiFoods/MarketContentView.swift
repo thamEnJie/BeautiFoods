@@ -28,6 +28,7 @@ struct MarketContentView: View {
     }
     
     @StateObject var cartManager = CartItemManager()
+    @StateObject var productListManager = ProductManager()
     
     let badgeWidth = 32
     
@@ -49,7 +50,7 @@ struct MarketContentView: View {
                 NavigationView {
                     VStack {
                         NavigationLink(
-                            destination: CheckoutPageView(checkoutItems: cartManager.cartItems),
+                            destination: CheckoutPageView(productListManager: productListManager, checkoutItems: cartManager.cartItems),
                             isActive: $loadCheckoutView
                         ) { EmptyView() }
                         HStack {
@@ -83,11 +84,11 @@ struct MarketContentView: View {
                         }.padding(10).fixedSize(horizontal: false, vertical: true)
                         ScrollView(.vertical, showsIndicators: true) {
                             LazyVGrid(columns: productColumns, spacing: 20) {
-                                ForEach(ProductList, id: \.self) { item in
+                                ForEach(productListManager.productList, id: \.self) { item in
                                     if filterProduct(item, filter: filters) {
                                         ZStack(alignment: .bottom) {
                                             NavigationLink {
-                                                ProductContentView(itemIndex: item.productIndex, cartManager: cartManager)
+                                                ProductContentView(itemIndex: item.productIndex, cartManager: cartManager, productListManager: productListManager)
                                             } label: {
                                                 ZStack {
                                                     Color.secondaryColour.opacity(0.5).cornerRadius(10)
@@ -125,7 +126,7 @@ struct MarketContentView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             NavigationLink  {
-                                SettingsView(loginState: $loginState, cartManager: cartManager).navigationTitle("Preferences")
+                                SettingsView(loginState: $loginState, cartManager: cartManager, productListManager: productListManager).navigationTitle("Preferences")
                             } label: {
                                 Image(systemName: "gear")
                                     .blur(radius: CGFloat(backgroundBlur))
@@ -161,43 +162,18 @@ struct MarketContentView: View {
                         }
                     }
                     .sheet(isPresented: $showCartSheet) {
-                        CartView(cartManager: cartManager, openCheckout: $loadCheckoutView)
+                        CartView(cartManager: cartManager, productListManager: productListManager, openCheckout: $loadCheckoutView)
                     }
                     .onAppear {
                         if !viewLoadedAlready {
-                            Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
-                                if let error = error {
-                                    print("Error getting documents: \(error)")
-                                } else {
-                                    ProductList = []
-                                    for document in querySnapshot!.documents {
-                                        ProductList.append(Product(
-                                            name: document.data()["name"] as! String,
-                                            cost: document.data()["cost"] as! Double,
-                                            productType: document.data()["productType"] as! Int,
-                                            productIndex: document.data()["productIndex"] as! Int
-                                        ))
-                                    }
-                                    ProductList.sort{$0.productIndex < $1.productIndex}
-                                    let old = cartManager.cartItems
-                                    var update: [CartItem] = []
-                                    for i in 0...ProductList.count-1 {
-                                        if let updatedIndex = old.firstIndex(where: { $0.productID == i }) {
-                                            update.append(CartItem(productID: i, count: old[updatedIndex].count))
-                                        } else {
-                                            update.append(CartItem(productID: i, count: 0))
-                                        }
-                                    }
-                                    cartManager.cartItems = update
-                                    viewLoadedAlready = true
-                                }
-                            }
+                            retrieveProductList(updateCartItems: true, productListManager: ProductManager(), CartManager: cartManager)
+                            viewLoadedAlready = true
                         }
                     }.background(Color.backgroundColour)
                 }
                 .overlay {
                     if showFilterCard {
-                        FilterBottomSheetView(isPresented: $showFilterCard, filter: $filters, blur: $backgroundBlur)
+                        FilterBottomSheetView(productListManager: productListManager, isPresented: $showFilterCard, filter: $filters, blur: $backgroundBlur)
                     }
                 }
             } else {
@@ -207,6 +183,45 @@ struct MarketContentView: View {
             if Auth.auth().currentUser?.uid == nil {
                 loginState = loginState == .anonymous ? .anonymous:.notLoggedIn
             } else if loginState != .loggedIn { loginState = Auth.auth().currentUser!.isAnonymous ? .anonymous:.loggedIn }
+        }
+    }
+}
+
+func retrieveProductList(updateCartItems: Bool, productListManager: ProductManager, CartManager cartManager: CartItemManager) {
+    Firestore.firestore().collection("ProductList").document("testItem").getDocument() { (testDoc, err) in
+        if let testDoc = testDoc, testDoc.exists {
+            if (productListManager.productList == [] ? true:(testDoc.data()!["productListVersion"] as! Double != 0.0)) {
+                Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
+                    } else {
+                        productListManager.productList = []
+                        for document in querySnapshot!.documents {
+                            productListManager.productList.append(Product(
+                                name: document.data()["name"] as! String,
+                                cost: (document.data()["name"] as! String == "Test Item") ? (document.data()["productListVersion"] as! Double):(document.data()["cost"] as! Double),
+                                productType: document.data()["productType"] as! Int,
+                                productIndex: document.data()["productIndex"] as! Int
+                            ))
+                        }
+                        productListManager.productList.sort{$0.productIndex < $1.productIndex}
+                        if updateCartItems {
+                            let old = cartManager.cartItems
+                            var update: [CartItem] = []
+                            for i in 0...productListManager.productList.count-1 {
+                                if let updatedIndex = old.firstIndex(where: { $0.productID == i }) {
+                                    update.append(CartItem(productID: i, count: old[updatedIndex].count))
+                                } else {
+                                    update.append(CartItem(productID: i, count: 0))
+                                }
+                            }
+                            cartManager.cartItems = update
+                        }
+                    }
+                }
+            }
+        } else {
+            print("Document does not exist")
         }
     }
 }

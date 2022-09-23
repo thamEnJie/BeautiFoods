@@ -11,10 +11,11 @@ import FirebaseFirestore
 struct ProductContentView: View {
     var itemIndex: Int
     @ObservedObject var cartManager: CartItemManager
+    @ObservedObject var productListManager: ProductManager
     var body: some View {
         VStack {
-            Text(ProductList[itemIndex].name)
-            Text("$"+String(format: "%.2f", ProductList[itemIndex].cost))
+            Text(productListManager.productList[itemIndex].name)
+            Text("$"+String(format: "%.2f", productListManager.productList[itemIndex].cost))
             Text(String(cartManager.cartItems[itemIndex].count))
             Button {
                 cartManager.cartItems[itemIndex].count += 1
@@ -22,25 +23,6 @@ struct ProductContentView: View {
                 Image(systemName: "plus.circle")
             }
         }.background(Color.backgroundColour)
-        .onAppear {
-            if ProductList == [] {
-                Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error getting documents: \(error)")
-                    } else {
-                        for document in querySnapshot!.documents {
-                            ProductList.append(Product(
-                                name: document.data()["name"] as! String,
-                                cost: document.data()["cost"] as! Double,
-                                productType: document.data()["productType"] as! Int,
-                                productIndex: document.data()["productIndex"] as! Int
-                            ))
-                        }
-                        ProductList.sort{$0.productIndex < $1.productIndex}
-                    }
-                }
-            }
-        }
     }
 }
 

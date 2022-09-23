@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FilterBottomSheetView: View {
     
+    @ObservedObject var productListManager: ProductManager
+    
     @Binding var isPresented: Bool
     @Binding var filter: Filter
     @Binding var blur: Double
@@ -29,7 +31,6 @@ struct FilterBottomSheetView: View {
     let handleSize = 25.0
     @State var sliderWidth = 0.0
     let sliderHeight = 3.5
-    let maxPrice = ProductList.map{$0.cost}.max()!
     func calculateHandlePricePoint(_ i: Int, marginPercentage: Double, handleEnd: Double, location handleLocation: Double, maximumPrice: Double) -> Int {
         let pricePercentage = handleLocation/handleEnd
         if i==0 && pricePercentage <= marginPercentage {return 0}
@@ -38,6 +39,9 @@ struct FilterBottomSheetView: View {
     }
     func getHandleLocation(price: Int, maximumPrice: Double, handleEnd: Double) -> Double {
         return price == -1 ? handleEnd:Double(price)/maximumPrice*handleEnd
+    }
+    func maxPrice(productListManager: ProductManager) -> Double {
+        return productListManager.productList.map{$0.cost}.max()!
     }
     
     @State var presentAlert = false
@@ -97,7 +101,7 @@ struct FilterBottomSheetView: View {
                         }
                     }.padding(.vertical)
                     VStack(alignment: .leading) {
-                        Text("Price Range [$\(filter.priceRange[0])-$\(filter.priceRange[1] == -1 ? String(maxPrice)+"+":String(filter.priceRange[1]))]")
+                        Text("Price Range [$\(filter.priceRange[0])-$\(filter.priceRange[1] == -1 ? String(maxPrice(productListManager: productListManager))+"+":String(filter.priceRange[1]))]")
                             .font(.headline)
                         HStack {
                             Text("$0").foregroundColor(.secondary).padding(.trailing)
@@ -132,19 +136,19 @@ struct FilterBottomSheetView: View {
                                                         if handleLocation<handleStart { handleLocation=handleStart }
                                                         if handleLocation>handleEnd { handleLocation=handleEnd }
                                                         priceRangeHandleOffset[i] = Double(dragDistance.location.x)-handleSize/2
-                                                        filter.priceRange[i] = calculateHandlePricePoint(i, marginPercentage: 0.05, handleEnd: handleEnd, location: handleLocation, maximumPrice: maxPrice)
+                                                        filter.priceRange[i] = calculateHandlePricePoint(i, marginPercentage: 0.05, handleEnd: handleEnd, location: handleLocation, maximumPrice: maxPrice(productListManager: productListManager))
                                                     }
                                                 })
                                             )
                                             .onAppear {
-                                                priceRangeHandleOffset[i] = getHandleLocation(price: filter.priceRange[i], maximumPrice: maxPrice, handleEnd: sliderWidth-handleSize)-handleSize/2
+                                                priceRangeHandleOffset[i] = getHandleLocation(price: filter.priceRange[i], maximumPrice: maxPrice(productListManager: productListManager), handleEnd: sliderWidth-handleSize)-handleSize/2
                                             }
                                     }
                                 }
                             }.padding(.vertical)
-                            VStack{Text("$" + String(maxPrice) + "+").foregroundColor(.clear).padding(.leading)}.overlay { // overlay to keep GeometryReader to the bounds of the Text, if not, it would breakt the layout
+                            VStack{Text("$" + String(maxPrice(productListManager: productListManager)) + "+").foregroundColor(.clear).padding(.leading)}.overlay { // overlay to keep GeometryReader to the bounds of the Text, if not, it would breakt the layout
                                 GeometryReader { geo in
-                                    Text("$" + String(maxPrice) + "+").foregroundColor(.secondary)
+                                    Text("$" + String(maxPrice(productListManager: productListManager)) + "+").foregroundColor(.secondary)
                                 }.padding(.leading)
                             }
                         }

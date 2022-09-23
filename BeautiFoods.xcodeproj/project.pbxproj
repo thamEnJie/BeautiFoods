@@ -11,6 +11,7 @@
 		A97084CE28B736B2008EB776 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CD28B736B2008EB776 /* CartView.swift */; };
 		A97084D028B73D63008EB776 /* CartPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97084CF28B73D63008EB776 /* CartPersistence.swift */; };
 		A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A997157328D174D3003B69DC /* FilterBottomSheetView.swift */; };
+		A9973B7728DD81A5006A4048 /* ProductListPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9973B7628DD81A5006A4048 /* ProductListPersistence.swift */; };
 		A99D1B9828B4729B00B7F920 /* BeautiFoodsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */; };
 		A99D1B9A28B4729B00B7F920 /* MarketContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99D1B9928B4729B00B7F920 /* MarketContentView.swift */; };
 		A99D1B9C28B472A000B7F920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A99D1B9B28B472A000B7F920 /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 		A97084CD28B736B2008EB776 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		A97084CF28B73D63008EB776 /* CartPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPersistence.swift; sourceTree = "<group>"; };
 		A997157328D174D3003B69DC /* FilterBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBottomSheetView.swift; sourceTree = "<group>"; };
+		A9973B7628DD81A5006A4048 /* ProductListPersistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListPersistence.swift; sourceTree = "<group>"; };
 		A99D1B9428B4729B00B7F920 /* BeautiFoods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautiFoods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99D1B9728B4729B00B7F920 /* BeautiFoodsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautiFoodsApp.swift; sourceTree = "<group>"; };
 		A99D1B9928B4729B00B7F920 /* MarketContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				A97084CF28B73D63008EB776 /* CartPersistence.swift */,
+				A9973B7628DD81A5006A4048 /* ProductListPersistence.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 				A9B8B5E128D719590006CC22 /* LoginView.swift in Sources */,
 				A97084CC28B736A5008EB776 /* SettingsView.swift in Sources */,
 				A997157428D174D3003B69DC /* FilterBottomSheetView.swift in Sources */,
+				A9973B7728DD81A5006A4048 /* ProductListPersistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +390,6 @@
 				INFOPLIST_FILE = BeautiFoods/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -415,7 +418,6 @@
 				INFOPLIST_FILE = BeautiFoods/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
