@@ -64,13 +64,14 @@ struct FilterBottomSheetView: View {
                                         }
                                     } label: {
                                         Text(chosenFilter.rawValue)
+                                            .fontWeight(filter.sorting == chosenFilter ? .semibold:.none)
                                             .padding(9)
                                             .foregroundColor(filter.sorting == chosenFilter ? Color(UIColor.label):Color(UIColor.systemBackground))
                                             .background(filter.sorting == chosenFilter ? Color(UIColor.systemGray6):Color(UIColor.systemGray2))
                                             .cornerRadius(7)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 7)
-                                                    .stroke(filter.sorting == chosenFilter ? Color(UIColor.label):.clear, lineWidth: 2)
+                                                    .stroke(filter.sorting == chosenFilter ? Color.accentColor:.clear, lineWidth: 2)
                                             )
                                     }
                                     
@@ -88,8 +89,8 @@ struct FilterBottomSheetView: View {
                                 } label: {
                                     Label(i==0 ? "Fruits":"Vegetables", systemImage: filter.productType[i] ? "checkmark":"xmark")
                                         .padding(9)
-                                        .foregroundColor(Color(UIColor.systemBackground))
-                                        .background(filter.productType[i] ? Color.green:Color.gray)
+                                        .foregroundColor(Color.backgroundColour)
+                                        .background(filter.productType[i] ? Color.accentColor:Color.gray)
                                         .cornerRadius(10)
                                 }
                             }
@@ -161,7 +162,7 @@ struct FilterBottomSheetView: View {
                 .padding(.horizontal)
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color(UIColor.systemBackground))
+                .background(Color.backgroundColour.shadow(radius: 100, x: 0, y: -10))
                 .offset(y: CGFloat(viewOffset))
                 .gesture(DragGesture()
                     .onChanged({ dragDistance in

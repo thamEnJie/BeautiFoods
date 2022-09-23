@@ -44,12 +44,12 @@ struct CheckoutPageView: View {
             } label: {
                 Text("Checkout")
             }.disabled(Auth.auth().currentUser?.uid == nil)
-        }
+        }.background(Color.backgroundColour)
     }
 }
 
 struct CheckoutPageView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutPageView(checkoutItems: [CartItem(productID: 1, count: 2), CartItem(productID: 2, count: 3)])
+        CheckoutPageView(checkoutItems: CartItemManager().cartItems)
     }
 }

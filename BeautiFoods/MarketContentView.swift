@@ -29,11 +29,10 @@ struct MarketContentView: View {
     
     @StateObject var cartManager = CartItemManager()
     
-    let badgewWidth = 32
-    let badgeOffset = -5
+    let badgeWidth = 32
     
     let productColumns = [
-        GridItem(.adaptive(minimum: 100), spacing: 25, alignment: .center)
+        GridItem(.adaptive(minimum: 150), spacing: 25, alignment: .center)
     ]
     
     func countCart(_ cartM: CartItemManager) -> Int {
@@ -55,32 +54,34 @@ struct MarketContentView: View {
                         ) { EmptyView() }
                         HStack {
                             VStack {
-                                Text("BeautiFoods") // Add name?
+                                Text("BeautiFoods").foregroundColor(.primaryLabel)
                                     .font(.largeTitle)
                                     .bold()
                                     .padding(.bottom, 5)
-                                Text("Beauty is from within")
+                                Text("Beauty is from within").foregroundColor(.primaryLabel)
                                     .font(.callout)
-                                Text("Logged in \(loginState == .loggedIn ? "with \(Auth.auth().currentUser?.email ?? "an Account")":"as guest")").font(.caption).padding(.top, 1).foregroundColor(.secondary)
+                                Text("Logged in \(loginState == .loggedIn ? "with \(Auth.auth().currentUser?.email ?? "an Account")":"as guest")").foregroundColor(.secondaryColour)
+                                    .font(.caption)
+                                    .padding(.top, 1)
                             }
                             .padding(.top, 15)
                             .padding(.bottom, 25)
                         }
                         
                         HStack {
-                            Image(systemName: "magnifyingglass")
-                            TextField("Search for Products", text: $searchProducts)
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                TextField("Search for Products", text: $searchProducts).padding(.vertical, 5)
+                            }.padding(.horizontal, 5).background(Color.secondaryColour.opacity(0.5)).cornerRadius(10)
                             Button {
                                 showFilterCard = true
                             } label: {
                                 Image(systemName: "line.3.horizontal.decrease")
                                     .foregroundColor(.accentColor)
+                                    .frame(maxHeight: .infinity).padding(5).background(Color.secondaryColour.opacity(0.5)).cornerRadius(10)
                             }
-                        }
-                        .padding()
-                        ScrollView (.vertical, showsIndicators: true) {
-                            Spacer()
-                                .frame(height: CGFloat(badgewWidth/2-badgeOffset))
+                        }.padding(10).fixedSize(horizontal: false, vertical: true)
+                        ScrollView(.vertical, showsIndicators: true) {
                             LazyVGrid(columns: productColumns, spacing: 20) {
                                 ForEach(ProductList, id: \.self) { item in
                                     if filterProduct(item, filter: filters) {
@@ -88,30 +89,36 @@ struct MarketContentView: View {
                                             NavigationLink {
                                                 ProductContentView(itemIndex: item.productIndex, cartManager: cartManager)
                                             } label: {
-                                                VStack {
-                                                    Image(item.imageName)
-                                                        .resizable()
-                                                        .cornerRadius(10)
-                                                        .scaledToFit()
-                                                    Text(item.name)
-                                                    Text("$"+String(format: "%.2f", item.cost))
+                                                ZStack {
+                                                    Color.secondaryColour.opacity(0.5).cornerRadius(10)
+                                                    VStack(spacing: 0) {
+                                                        Image(item.imageName)
+                                                            .resizable()
+                                                            .cornerRadius(10)
+                                                            .scaledToFit()
+                                                            .scaleEffect(0.85)
+                                                            .badge(
+                                                                width: badgeWidth,
+                                                                count: cartManager.cartItems[item.productIndex].count,
+                                                                textColour: Color.secondaryLabel,
+                                                                tintColour: Color.secondaryColour,
+                                                                offset: -badgeWidth-2
+                                                            )
+                                                        HStack {
+                                                            Text(item.name).foregroundColor(.secondaryLabel)
+                                                            Spacer()
+                                                            Text("$"+String(format: "%.2f", item.cost)).foregroundColor(.secondaryLabel)
+                                                        }.padding()
+                                                    }
                                                 }
                                             }
                                         }
-                                        .badge(
-                                            width: badgewWidth,
-                                            count: cartManager.cartItems[item.productIndex].count,
-                                            tintColour: Color(UIColor.label),
-                                            offset: badgeOffset
-                                        )
                                     }
                                 }
                             }
                             .padding(.horizontal, 30)
                             .padding(.bottom, 10)
                         }
-                        .padding(.vertical)
-                        Spacer()
                     }
                     .blur(radius: CGFloat(backgroundBlur))
                     .navigationBarTitleDisplayMode(.inline)
@@ -120,11 +127,8 @@ struct MarketContentView: View {
                             NavigationLink  {
                                 SettingsView(loginState: $loginState, cartManager: cartManager).navigationTitle("Preferences")
                             } label: {
-                                VStack {
-                                    Image(systemName: "gear")
-                                    Text("Settings")
-                                }
-                                .blur(radius: CGFloat(backgroundBlur))
+                                Image(systemName: "gear")
+                                    .blur(radius: CGFloat(backgroundBlur))
                             }
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
@@ -132,12 +136,9 @@ struct MarketContentView: View {
                                 Button  {
                                     showCartSheet = true
                                 } label: {
-                                    VStack {
-                                        Image(systemName: (countCart(cartManager)==0 ? "cart" : "cart.fill"))
-                                        Text("Cart")
-                                    }
-                                    .badge(width: 17, count: countCart(cartManager), tintColour: .black, offset: -2)
-                                    .blur(radius: CGFloat(backgroundBlur))
+                                    Image(systemName: (countCart(cartManager)==0 ? "cart" : "cart.fill"))
+                                        .badge(width: 15, count: countCart(cartManager), textColour: .secondaryColour , tintColour: .secondaryLabel, offset: -2)
+                                        .blur(radius: CGFloat(backgroundBlur))
                                 }
                             } else {
                                 Button {
@@ -192,7 +193,7 @@ struct MarketContentView: View {
                                 }
                             }
                         }
-                    }
+                    }.background(Color.backgroundColour)
                 }
                 .overlay {
                     if showFilterCard {
@@ -211,16 +212,16 @@ struct MarketContentView: View {
 }
 
 extension View {
-    func badge(width: Int = 24, count: Int = 10, tintColour: Color = .red, offset: Int = 0) -> some View {
+    func badge(width: Int = 24, count: Int = 10, textColour: Color = .black, tintColour: Color = .red, borderColour: Color = .white, offset: Int = 0) -> some View {
         ZStack(alignment: .topTrailing) {
             self
             ZStack {
                 if count != 0 {
                     Text("\(count)")
                         .font(.system(size: CGFloat(width/20*13)))
-                        .fontWeight(.bold)
+                        .fontWeight(.black)
                         .frame(width: CGFloat(width), height: CGFloat(width))
-                        .foregroundColor(Color(UIColor.systemBackground))
+                        .foregroundColor(textColour)
                         .background(Circle().fill(tintColour))
                         .transition(.scale)
                 }
@@ -230,8 +231,19 @@ extension View {
     }
 }
 
+extension Color {
+    static let backgroundColour = Color("backgroundColour")
+    static let secondaryBackgroundColour = Color("secondaryBackgroundColour")
+    static let primaryColour = Color("primary")
+    static let secondaryColour = Color("secondary")
+    static let primaryLabel = Color("primary")
+    static let secondaryLabel = Color("secondaryLabel")
+    static let middleColour = Color("middleColour")
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MarketContentView()
+        MarketContentView().preferredColorScheme(.light)
+        MarketContentView().preferredColorScheme(.dark)
     }
 }

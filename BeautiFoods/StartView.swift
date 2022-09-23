@@ -26,7 +26,7 @@ struct StartView: View {
                     Text("Get Started")
                 }
             } else { LoginView(loginState: $loginState, cartManager: cartManager, isPresented: $loadLoginPage) }
-        }
+        }.background(Color.backgroundColour)
     }
 }
 

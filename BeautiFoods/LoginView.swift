@@ -27,6 +27,7 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             HStack {
                 Image(systemName: "envelope")
                 TextField("Email", text: $email)
@@ -117,7 +118,8 @@ struct LoginView: View {
                     }.foregroundColor(.primary)
                 }
             }.padding().padding(.top)
-        }.padding(.horizontal).padding(.horizontal)
+            Spacer()
+        }.padding(.horizontal).padding(.horizontal).background(Color.backgroundColour)
             .alert("Error", isPresented: $alertPresented) {} message: {
                 Text(alertMessage)
             }

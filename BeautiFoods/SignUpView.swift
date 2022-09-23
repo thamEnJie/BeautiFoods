@@ -82,7 +82,7 @@ struct SignUpView: View {
                     Text("Signing you up")
                 }
             }
-        }.padding(.horizontal).padding(.horizontal)
+        }.padding(.horizontal).padding(.horizontal).background(Color.backgroundColour)
             .alert("\(alertTitle)", isPresented: $alertPresented) {
                 Button(role: .cancel){
                     if alertTitle == "Account Created" {

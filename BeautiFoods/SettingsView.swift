@@ -25,111 +25,113 @@ struct SettingsView: View {
     
     var body: some View {
         Form {
-            Section("Account") {
-                if loginState == .loggedIn {
-                    Text(Auth.auth().currentUser?.email ?? "Failed to retrieve this account's email.")
-                }
-                Button {
-                    do {
-                        try Auth.auth().signOut()
-                    } catch let signOutError as NSError {
-                        print("Error signing out: %@", signOutError)
+            Group {
+                Section("Account") {
+                    if loginState == .loggedIn {
+                        Text(Auth.auth().currentUser?.email ?? "Failed to retrieve this account's email.")
                     }
-                    withAnimation {
-                        loginState = .notLoggedIn
-                    }
-                } label: {
-                    Text(loginState == .loggedIn ? "Log Out":"Login/Create an Account")
-                }.disabled(loginState == .anonymous ? false:Auth.auth().currentUser?.uid == nil)
-                if loginState == .loggedIn {
                     Button {
-                        withAnimation(.spring()) {
-                            showMoreAccActions.toggle()
+                        do {
+                            try Auth.auth().signOut()
+                        } catch let signOutError as NSError {
+                            print("Error signing out: %@", signOutError)
+                        }
+                        withAnimation {
+                            loginState = .notLoggedIn
                         }
                     } label: {
-                        HStack {
-                            Text("More Account Actions")
-                            Spacer()
-                            Image(systemName: "chevron.up").controlSize(.mini).foregroundColor(.secondary).rotationEffect(Angle(degrees: showMoreAccActions ? 180:0))
+                        Text(loginState == .loggedIn ? "Log Out":"Login/Create an Account")
+                    }.disabled(loginState == .anonymous ? false:Auth.auth().currentUser?.uid == nil)
+                    if loginState == .loggedIn {
+                        Button {
+                            withAnimation(.spring()) {
+                                showMoreAccActions.toggle()
+                            }
+                        } label: {
+                            HStack {
+                                Text("More Account Actions")
+                                Spacer()
+                                Image(systemName: "chevron.up").controlSize(.mini).foregroundColor(.secondary).rotationEffect(Angle(degrees: showMoreAccActions ? 180:0))
+                            }
+                        }
+                        if showMoreAccActions {
+                            Button(role: .destructive) {
+                                resetPasswordAlertShown = true
+                            } label: {
+                                Text("Reset Password").padding(.leading)
+                            }.disabled(Auth.auth().currentUser?.uid == nil)
+                                .alert("Reset Password?", isPresented: $resetPasswordAlertShown) {
+                                    Button(role: .cancel) {} label: { Text("Cancel") }
+                                    Button {
+                                        Auth.auth().sendPasswordReset(withEmail: Auth.auth().currentUser!.email!) { error in
+                                            if let error = error {
+                                                print(error)
+                                            }
+                                        }
+                                    } label: {
+                                        Text("OK")
+                                    }
+                                } message: {
+                                    Text("An Email will be sent to \(Auth.auth().currentUser!.email!) to reset your password.")
+                                }
+                            Button(role: .destructive) {
+                                deleteAccAlertShown = true
+                            } label: {
+                                Text("Delete Account").padding(.leading)
+                            }.disabled(Auth.auth().currentUser?.uid == nil)
+                                .sheet(isPresented: $deleteAccAlertShown) {
+                                    VStack {
+                                        Spacer()
+                                        Text("Delete Account").bold().font(Font.largeTitle)
+                                        Spacer()
+                                        HStack {
+                                            Image(systemName: "envelope")
+                                            TextField("Email", text: $emailConfirm)
+                                                .modifier(CustomInputField(contentType: .emailAddress))
+                                        }.padding(.vertical)
+                                        HStack {
+                                            Image(systemName: "key").rotationEffect(.degrees(-45))
+                                            SecureField("Password", text: $passwordConfirm)
+                                                .modifier(CustomInputField(contentType: .password))
+                                        }.padding(.vertical)
+                                        Spacer()
+                                        Spacer()
+                                        HStack {
+                                            Button(role: .destructive) {
+                                                //delete from firestore database
+                                                //re-auth
+                                                //delete account
+                                            } label: {
+                                                Text("Delete Account")
+                                            }.disabled(!deleteConfirm || emailConfirm != Auth.auth().currentUser!.email!) // also confirm password using reauth
+                                            Button {
+                                                deleteConfirm.toggle()
+                                            } label: {
+                                                Image(systemName: deleteConfirm ? "checkmark.square":"xmark.square")
+                                            }
+                                        }
+                                    }.padding(.horizontal).padding(.horizontal)
+                                }
                         }
                     }
-                    if showMoreAccActions {
-                        Button(role: .destructive) {
-                            resetPasswordAlertShown = true
-                        } label: {
-                            Text("Reset Password").padding(.leading)
-                        }.disabled(Auth.auth().currentUser?.uid == nil)
-                            .alert("Reset Password?", isPresented: $resetPasswordAlertShown) {
-                                Button(role: .cancel) {} label: { Text("Cancel") }
-                                Button {
-                                    Auth.auth().sendPasswordReset(withEmail: Auth.auth().currentUser!.email!) { error in
-                                        if let error = error {
-                                            print(error)
-                                        }
-                                    }
-                                } label: {
-                                    Text("OK")
-                                }
-                            } message: {
-                                Text("An Email will be sent to \(Auth.auth().currentUser!.email!) to reset your password.")
-                            }
-                        Button(role: .destructive) {
-                            deleteAccAlertShown = true
-                        } label: {
-                            Text("Delete Account").padding(.leading)
-                        }.disabled(Auth.auth().currentUser?.uid == nil)
-                            .sheet(isPresented: $deleteAccAlertShown) {
-                                VStack {
-                                    Spacer()
-                                    Text("Delete Account").bold().font(Font.largeTitle)
-                                    Spacer()
-                                    HStack {
-                                        Image(systemName: "envelope")
-                                        TextField("Email", text: $emailConfirm)
-                                            .modifier(CustomInputField(contentType: .emailAddress))
-                                    }.padding(.vertical)
-                                    HStack {
-                                        Image(systemName: "key").rotationEffect(.degrees(-45))
-                                        SecureField("Password", text: $passwordConfirm)
-                                            .modifier(CustomInputField(contentType: .password))
-                                    }.padding(.vertical)
-                                    Spacer()
-                                    Spacer()
-                                    HStack {
-                                        Button(role: .destructive) {
-                                            //delete from firestore database
-                                            //re-auth
-                                            //delete account
-                                        } label: {
-                                            Text("Delete Account")
-                                        }.disabled(!deleteConfirm || emailConfirm != Auth.auth().currentUser!.email!) // also confirm password using reauth
-                                        Button {
-                                            deleteConfirm.toggle()
-                                        } label: {
-                                            Image(systemName: deleteConfirm ? "checkmark.square":"xmark.square")
-                                        }
-                                    }
-                                }.padding(.horizontal).padding(.horizontal)
-                            }
+                }
+                Section("Shop") {
+                    NavigationLink {
+                        NotificationSettingsView(loginState: loginState, cartManager: cartManager).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
+                    } label: {
+                        HStack {
+                            Text("Notifications and Lists")
+                        }
+                    }
+                    NavigationLink {
+                    } label: {
+                        HStack {
+                            Text("Billing")
+                        }
                     }
                 }
-            }
-            Section("Shop") {
-                NavigationLink {
-                    NotificationSettingsView(loginState: loginState, cartManager: cartManager).navigationTitle("Repeated Shopping List").navigationBarTitleDisplayMode(.inline)
-                } label: {
-                    HStack {
-                        Text("Notifications and Lists")
-                    }
-                }
-                NavigationLink {
-                } label: {
-                    HStack {
-                        Text("Billing")
-                    }
-                }
-            }
-        }.navigationBarTitleDisplayMode(.large)
+            }.listRowBackground(Color.backgroundColour)
+        }.navigationBarTitleDisplayMode(.large).onAppear{ UITableView.appearance().backgroundColor = UIColor(Color.secondaryBackgroundColour) }
     }
 }
 
@@ -164,155 +166,158 @@ struct NotificationSettingsView: View {
     
     var body: some View {
         Form {
-            Section("Shopping Lists") {
-                ForEach(listsOfShoppingListsName, id: \.self) { listName in
-                    HStack {
-                        Text(listName)
-                        Spacer()
-                        Button {
-//                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
-//                                cartManager.cartItems[i.productID].count += i.count
-//                            }
-                        } label: {
-                            Image(systemName: "cart.badge.plus")
+            Group {
+                Section("Shopping Lists") {
+                    ForEach(listsOfShoppingListsName, id: \.self) { listName in
+                        HStack {
+                            Text(listName)
+                            Spacer()
+                            Button {
+                                //                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
+                                //                                cartManager.cartItems[i.productID].count += i.count
+                                //                            }
+                            } label: {
+                                Image(systemName: "cart.badge.plus")
+                            }
+                            Button {
+                                //                            cartManager.cartItems = cartManager.cartItems.map{CartItem(id: $0.id, productID: $0.productID, count: 0)}
+                                //                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
+                                //                                cartManager.cartItems[i.productID].count = i.count
+                                //                            }
+                            } label: {
+                                Image(systemName: "cart.fill")
+                            }
+                        }.buttonStyle(.borderless).swipeActions {
+                            Button(role: .destructive) {
+                                //
+                            } label: {
+                                Text("Delete List")
+                            }
+                            
                         }
-                        Button {
-//                            cartManager.cartItems = cartManager.cartItems.map{CartItem(id: $0.id, productID: $0.productID, count: 0)}
-//                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
-//                                cartManager.cartItems[i.productID].count = i.count
-//                            }
-                        } label: {
-                            Image(systemName: "cart.fill")
-                        }
-                    }.buttonStyle(.borderless).swipeActions {
-                        Button(role: .destructive) {
-                            //
-                        } label: {
-                            Text("Delete List")
-                        }
-
                     }
-                }
-                Button {
-                    addShoppingListSheetShown = true
-                } label: {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text("Add a Shopping List")
-                    }.padding(.leading)
-                }
-            }.disabled(loginState != .loggedIn)
-                .onAppear {
-                    if !listsUpdated {
-                        firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").getDocuments() { (querySnapshot, err) in
-                            if let err = err {
-                                print("Error getting documents: \(err)")
-                            } else {
-                                listsOfShoppingLists = []
-                                for doc in querySnapshot!.documents {
-                                    listsOfShoppingListsName.append("\(doc.documentID)")
-                                    firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(doc.documentID)").collection("\(doc.documentID)").getDocuments() { (CquerySnapshot, Cerr) in
-                                        if let Cerr = Cerr {
-                                            print("Error getting documents: \(Cerr)")
-                                        } else {
-                                            var temp: [[String:Any]] = []
-                                            for document in CquerySnapshot!.documents {
-                                                temp.append(document.data())
+                    Button {
+                        addShoppingListSheetShown = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("Add a Shopping List")
+                        }.padding(.leading)
+                    }
+                }.disabled(loginState != .loggedIn)
+                    .sheet(isPresented: $addShoppingListSheetShown) {
+                        VStack {
+                            TextField("Enter Name of List Here", text: $tempShoppingListName).font(.title).textFieldStyle(.roundedBorder).padding([.horizontal, .top])
+                            List {
+                                ForEach(tempShoppingList, id: \.self) { item in
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(ProductList[item.productID].name)
+                                            Text("$"+String(format: "%.2f", ProductList[item.productID].cost)).padding(.leading).font(Font.caption)
+                                        }
+                                        Spacer()
+                                        Button {
+                                            if item.count >= 1 { tempShoppingList[item.productID].count -= 1 }
+                                        } label: {
+                                            Image(systemName: "minus")
+                                        }
+                                        Text(String(item.count))
+                                        Button {
+                                            tempShoppingList[item.productID].count += 1
+                                        } label: {
+                                            Image(systemName: "plus")
+                                        }
+                                    }
+                                }
+                            }.buttonStyle(.borderless)
+                            Spacer()
+                            Button {
+                                tempShoppingList = tempShoppingList.filter{$0.count > 0}
+                                for shopItem in tempShoppingList {
+                                    firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").collection("\(tempShoppingListName)").document("\(ProductList[shopItem.productID].name)").setData(shopItem.dictionary)
+                                }
+                                firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").setData(["listName":"\(tempShoppingListName)"])
+                                addShoppingListSheetShown = false
+                                listsUpdated = false
+                            } label: {
+                                Text("Add to Lists")
+                            }.padding(.top).disabled(tempShoppingListName == "")
+                        }.background(Color.backgroundColour)
+                            .onAppear {
+                                tempShoppingList = []
+                                for i in 0...ProductList.count-1 { tempShoppingList.append(CartItem(productID: i, count: 0)) }
+                            }
+                    }
+                    .onAppear {
+                        if !listsUpdated {
+                            firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").getDocuments() { (querySnapshot, err) in
+                                if let err = err {
+                                    print("Error getting documents: \(err)")
+                                } else {
+                                    listsOfShoppingLists = []
+                                    for doc in querySnapshot!.documents {
+                                        listsOfShoppingListsName.append("\(doc.documentID)")
+                                        firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(doc.documentID)").collection("\(doc.documentID)").getDocuments() { (CquerySnapshot, Cerr) in
+                                            if let Cerr = Cerr {
+                                                print("Error getting documents: \(Cerr)")
+                                            } else {
+                                                var temp: [[String:Any]] = []
+                                                for document in CquerySnapshot!.documents {
+                                                    temp.append(document.data())
+                                                }
+                                                listsOfShoppingLists.append(temp.map{CartItem(productID: $0["productID"] as! Int, count: $0["count"] as! Int)})
                                             }
-                                            listsOfShoppingLists.append(temp.map{CartItem(productID: $0["productID"] as! Int, count: $0["count"] as! Int)})
                                         }
                                     }
                                 }
                             }
+                            listsUpdated = true
                         }
-                        listsUpdated = true
                     }
-                }
-                .sheet(isPresented: $addShoppingListSheetShown) {
-                VStack {
-                    TextField("Enter Name of List Here", text: $tempShoppingListName).font(.title).textFieldStyle(.roundedBorder).padding([.horizontal, .top])
-                    List {
-                        ForEach(tempShoppingList, id: \.self) { item in
+                Section("Notifications") {
+                    HStack {
+                        Toggle(isOn: $repeatedSelectionEnabled.animation(.spring())) {
+                            Text((repeatedSelectionEnabled ? "Notifies you every \(timeSelectionCountIndex+1) \(timeSelectionTypeRanges[timeSelectionTypeIndex].lowercased())\(timeSelectionCountIndex == 0 ? "":"s")":"Notifications Disabled")).foregroundColor(.primary)
+                        }
+                    }
+                    if repeatedSelectionEnabled {
+                        HStack(spacing: 0) {
+                            Picker("Time Count", selection: $timeSelectionCountIndex) {
+                                ForEach(0...timeSelectionCountRanges[timeSelectionTypeIndex]-1, id: \.self) { i in
+                                    Text("\(i+1)")
+                                }
+                            }.pickerStyle(.wheel)
+                            Picker("Time Type", selection: $timeSelectionTypeIndex) {
+                                ForEach(0...timeSelectionTypeRanges.count-1, id: \.self) { i in
+                                    Text(timeSelectionTypeRanges[i])
+                                }
+                            }.pickerStyle(.wheel)
+                        }
+                        Toggle("Automatic Repeated Shopping List", isOn: $arslEnabled.animation(.spring()))
+                            .foregroundColor(loginState == .loggedIn ? .primary:.secondary)
+                            .disabled(loginState != .loggedIn)
+                        if arslEnabled {
+                            //pick from the lists they have
+                        }
+                        Button {
+                            withAnimation(.spring()) {
+                                showInfo.toggle()
+                            }
+                        } label: {
                             HStack {
-                                VStack(alignment: .leading) {
-                                    Text(ProductList[item.productID].name)
-                                    Text("$"+String(format: "%.2f", ProductList[item.productID].cost)).padding(.leading).font(Font.caption)
-                                }
+                                Image(systemName: "info.circle")
+                                Text("What is Repeated Shopping List?")
                                 Spacer()
-                                Button {
-                                    if item.count >= 1 { tempShoppingList[item.productID].count -= 1 }
-                                } label: {
-                                    Image(systemName: "minus")
-                                }
-                                Text(String(item.count))
-                                Button {
-                                    tempShoppingList[item.productID].count += 1
-                                } label: {
-                                    Image(systemName: "plus")
-                                }
+                                Image(systemName: "chevron.up").controlSize(.mini).foregroundColor(.secondary).rotationEffect(Angle(degrees: showInfo ? 180:0))
                             }
                         }
-                    }.buttonStyle(.borderless)
-                    Spacer()
-                    Button {
-                        tempShoppingList = tempShoppingList.filter{$0.count > 0}
-                        for shopItem in tempShoppingList {
-                            firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").collection("\(tempShoppingListName)").document("\(ProductList[shopItem.productID].name)").setData(shopItem.dictionary)
-                        }
-                        firestoreDB.collection("users").document("\(Auth.auth().currentUser!.uid)").collection("lists").document("\(tempShoppingListName)").setData(["listName":"\(tempShoppingListName)"])
-                        addShoppingListSheetShown = false
-                        listsUpdated = false
-                    } label: {
-                        Text("Add to Lists")
-                    }.padding(.top).disabled(tempShoppingListName == "")
-                }.onAppear {
-                    tempShoppingList = []
-                    for i in 0...ProductList.count-1 { tempShoppingList.append(CartItem(productID: i, count: 0)) }
-                }
-            }
-            Section("Notifications") {
-                HStack {
-                    Toggle(isOn: $repeatedSelectionEnabled.animation(.spring())) {
-                        Text((repeatedSelectionEnabled ? "Notifies you every \(timeSelectionCountIndex+1) \(timeSelectionTypeRanges[timeSelectionTypeIndex].lowercased())\(timeSelectionCountIndex == 0 ? "":"s")":"Notifications Disabled")).foregroundColor(.primary)
-                    }
-                }
-                if repeatedSelectionEnabled {
-                    HStack(spacing: 0) {
-                        Picker("Time Count", selection: $timeSelectionCountIndex) {
-                            ForEach(0...timeSelectionCountRanges[timeSelectionTypeIndex]-1, id: \.self) { i in
-                                Text("\(i+1)")
-                            }
-                        }.pickerStyle(.wheel)
-                        Picker("Time Type", selection: $timeSelectionTypeIndex) {
-                            ForEach(0...timeSelectionTypeRanges.count-1, id: \.self) { i in
-                                Text(timeSelectionTypeRanges[i])
-                            }
-                        }.pickerStyle(.wheel)
-                    }
-                    Toggle("Automatic Repeated Shopping List", isOn: $arslEnabled.animation(.spring()))
-                        .foregroundColor(loginState == .loggedIn ? .primary:.secondary)
-                        .disabled(loginState != .loggedIn)
-                    if arslEnabled {
-                        //pick from the lists they have
-                    }
-                    Button {
-                        withAnimation(.spring()) {
-                            showInfo.toggle()
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: "info.circle")
-                            Text("What is Repeated Shopping List?")
-                            Spacer()
-                            Image(systemName: "chevron.up").controlSize(.mini).foregroundColor(.secondary).rotationEffect(Angle(degrees: showInfo ? 180:0))
+                        if showInfo {
+                            Text("A default shopping list would be added to your cart when you are notified! (Can only be used with an account)").padding([.leading, .vertical])
                         }
                     }
-                    if showInfo {
-                        Text("A default shopping list would be added to your cart when you are notified! (Can only be used with an account)").padding([.leading, .vertical])
-                    }
                 }
-            }
-            Section{EmptyView()}
+                Section{EmptyView()}
+            }.listRowBackground(Color.backgroundColour)
         }
     }
 }

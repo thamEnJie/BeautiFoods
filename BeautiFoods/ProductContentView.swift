@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct ProductContentView: View {
     var itemIndex: Int
@@ -19,6 +20,25 @@ struct ProductContentView: View {
                 cartManager.cartItems[itemIndex].count += 1
             } label: {
                 Image(systemName: "plus.circle")
+            }
+        }.background(Color.backgroundColour)
+        .onAppear {
+            if ProductList == [] {
+                Firestore.firestore().collection("ProductList").getDocuments() { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            ProductList.append(Product(
+                                name: document.data()["name"] as! String,
+                                cost: document.data()["cost"] as! Double,
+                                productType: document.data()["productType"] as! Int,
+                                productIndex: document.data()["productIndex"] as! Int
+                            ))
+                        }
+                        ProductList.sort{$0.productIndex < $1.productIndex}
+                    }
+                }
             }
         }
     }
