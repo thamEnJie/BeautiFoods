@@ -26,6 +26,22 @@ struct MarketContentView: View {
         if item.productType == 2 {return true}
         else {return filter.productType[item.productType]}
     }
+    @State var sortedProductList: [Product] = []
+    @State var prevSort: SortType = .random
+    func sortProducts() -> [Product] {
+        switch filters.sorting {
+            case .random:
+                return productListManager.productList.shuffled()
+            case .az:
+                return productListManager.productList.sorted { $0.name < $1.name }
+            case .za:
+                return productListManager.productList.sorted { $0.name > $1.name }
+            case .priceAscending:
+                return productListManager.productList.sorted { $0.cost < $1.cost }
+            case .priceDescending:
+                return productListManager.productList.sorted { $0.cost > $1.cost }
+        }
+    }
     
     @StateObject var cartManager = CartItemManager()
     @StateObject var productListManager = ProductManager()
@@ -84,8 +100,8 @@ struct MarketContentView: View {
                         }.padding(10).fixedSize(horizontal: false, vertical: true)
                         ScrollView(.vertical, showsIndicators: true) {
                             LazyVGrid(columns: productColumns, spacing: 20) {
-                                ForEach(productListManager.productList, id: \.self) { item in
-                                    if filterProduct(item, filter: filters) {
+                                ForEach(sortedProductList, id: \.self) { item in
+                                    if filterProduct(item, filter: filters) && searchProducts == "" ? true:item.name.lowercased().contains(searchProducts.lowercased()) && item.name != "Test Item" && !item.isDeprecated {
                                         ZStack(alignment: .bottom) {
                                             NavigationLink {
                                                 ProductContentView(itemIndex: item.productIndex, cartManager: cartManager, productListManager: productListManager)
@@ -166,6 +182,8 @@ struct MarketContentView: View {
                     }
                     .onAppear {
                         if !viewLoadedAlready {
+                            sortedProductList = sortProducts()
+                            prevSort = filters.sorting
                             retrieveProductList(updateCartItems: true, productListManager: ProductManager(), CartManager: cartManager)
                             viewLoadedAlready = true
                         }
@@ -174,6 +192,10 @@ struct MarketContentView: View {
                 .overlay {
                     if showFilterCard {
                         FilterBottomSheetView(productListManager: productListManager, isPresented: $showFilterCard, filter: $filters, blur: $backgroundBlur)
+                            .onDisappear {
+                                if prevSort != filters.sorting { sortedProductList = sortProducts() }
+                                prevSort = filters.sorting
+                            }
                     }
                 }
             } else {
