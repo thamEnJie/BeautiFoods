@@ -57,7 +57,7 @@ struct FilterBottomSheetView: View {
                 }.offset(y:5)
                 VStack(alignment: .leading) { //The actual contents of the half modal sheet is here
                     VStack(alignment: .leading) {
-                        Text("Sorting")
+                        Text("Sorting").foregroundColor(.primaryLabel)
                             .font(.headline)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
@@ -84,7 +84,7 @@ struct FilterBottomSheetView: View {
                         }
                     }.padding(.vertical)
                     VStack(alignment: .leading) {
-                        Text("Type")
+                        Text("Type").foregroundColor(.primaryLabel)
                             .font(.headline)
                         HStack {
                             ForEach (0...1, id: \.self) { i in
@@ -101,10 +101,10 @@ struct FilterBottomSheetView: View {
                         }
                     }.padding(.vertical)
                     VStack(alignment: .leading) {
-                        Text("Price Range [$\(filter.priceRange[0])-$\(filter.priceRange[1] == -1 ? String(maxPrice(productListManager: productListManager))+"+":String(filter.priceRange[1]))]")
+                        Text("Price Range [$\(filter.priceRange[0])-$\(filter.priceRange[1] == -1 ? String(maxPrice(productListManager: productListManager))+"+":String(filter.priceRange[1]))]").foregroundColor(.primaryLabel)
                             .font(.headline)
                         HStack {
-                            Text("$0").foregroundColor(.secondary).padding(.trailing)
+                            Text("$0").foregroundColor(.secondaryColour).padding(.trailing)
                             ZStack(alignment: .leading) {
                                 GeometryReader { g in
                                     VStack {
@@ -148,7 +148,7 @@ struct FilterBottomSheetView: View {
                             }.padding(.vertical)
                             VStack{Text("$" + String(maxPrice(productListManager: productListManager)) + "+").foregroundColor(.clear).padding(.leading)}.overlay { // overlay to keep GeometryReader to the bounds of the Text, if not, it would breakt the layout
                                 GeometryReader { geo in
-                                    Text("$" + String(maxPrice(productListManager: productListManager)) + "+").foregroundColor(.secondary)
+                                    Text("$" + String(maxPrice(productListManager: productListManager)) + "+").foregroundColor(.secondaryColour)
                                 }.padding(.leading)
                             }
                         }

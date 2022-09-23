@@ -29,7 +29,7 @@ struct SettingsView: View {
             Group {
                 Section("Account") {
                     if loginState == .loggedIn {
-                        Text(Auth.auth().currentUser?.email ?? "Failed to retrieve this account's email.")
+                        Text(Auth.auth().currentUser?.email ?? "Failed to retrieve this account's email.").foregroundColor(.primaryColour)
                     }
                     Button {
                         do {
@@ -83,7 +83,7 @@ struct SettingsView: View {
                                 .sheet(isPresented: $deleteAccAlertShown) {
                                     VStack {
                                         Spacer()
-                                        Text("Delete Account").bold().font(Font.largeTitle)
+                                        Text("Delete Account").bold().font(Font.largeTitle).foregroundColor(.primaryLabel)
                                         Spacer()
                                         HStack {
                                             Image(systemName: "envelope")
@@ -172,7 +172,7 @@ struct NotificationSettingsView: View {
                 Section("Shopping Lists") {
                     ForEach(listsOfShoppingListsName, id: \.self) { listName in
                         HStack {
-                            Text(listName)
+                            Text(listName).foregroundColor(.primaryLabel)
                             Spacer()
                             Button {
                                 //                            for i in listsOfShoppingLists[listsOfShoppingListsName.firstIndex(of: listName)] {
@@ -214,8 +214,8 @@ struct NotificationSettingsView: View {
                                 ForEach(tempShoppingList, id: \.self) { item in
                                     HStack {
                                         VStack(alignment: .leading) {
-                                            Text(productListManager.productList[item.productID].name)
-                                            Text("$"+String(format: "%.2f", productListManager.productList[item.productID].cost)).padding(.leading).font(Font.caption)
+                                            Text(productListManager.productList[item.productID].name).foregroundColor(.primaryLabel)
+                                            Text("$"+String(format: "%.2f", productListManager.productList[item.productID].cost)).padding(.leading).font(Font.caption).foregroundColor(.primaryLabel)
                                         }
                                         Spacer()
                                         Button {
@@ -223,7 +223,7 @@ struct NotificationSettingsView: View {
                                         } label: {
                                             Image(systemName: "minus")
                                         }
-                                        Text(String(item.count))
+                                        Text(String(item.count)).foregroundColor(.primaryLabel)
                                         Button {
                                             tempShoppingList[item.productID].count += 1
                                         } label: {
@@ -279,19 +279,19 @@ struct NotificationSettingsView: View {
                 Section("Notifications") {
                     HStack {
                         Toggle(isOn: $repeatedSelectionEnabled.animation(.spring())) {
-                            Text((repeatedSelectionEnabled ? "Notifies you every \(timeSelectionCountIndex+1) \(timeSelectionTypeRanges[timeSelectionTypeIndex].lowercased())\(timeSelectionCountIndex == 0 ? "":"s")":"Notifications Disabled")).foregroundColor(.primary)
+                            Text((repeatedSelectionEnabled ? "Notifies you every \(timeSelectionCountIndex+1) \(timeSelectionTypeRanges[timeSelectionTypeIndex].lowercased())\(timeSelectionCountIndex == 0 ? "":"s")":"Notifications Disabled")).foregroundColor(.primaryLabel)
                         }
                     }
                     if repeatedSelectionEnabled {
                         HStack(spacing: 0) {
                             Picker("Time Count", selection: $timeSelectionCountIndex) {
                                 ForEach(0...timeSelectionCountRanges[timeSelectionTypeIndex]-1, id: \.self) { i in
-                                    Text("\(i+1)")
+                                    Text("\(i+1)").foregroundColor(.primaryLabel)
                                 }
                             }.pickerStyle(.wheel)
                             Picker("Time Type", selection: $timeSelectionTypeIndex) {
                                 ForEach(0...timeSelectionTypeRanges.count-1, id: \.self) { i in
-                                    Text(timeSelectionTypeRanges[i])
+                                    Text(timeSelectionTypeRanges[i]).foregroundColor(.primaryLabel)
                                 }
                             }.pickerStyle(.wheel)
                         }
@@ -314,7 +314,7 @@ struct NotificationSettingsView: View {
                             }
                         }
                         if showInfo {
-                            Text("A default shopping list would be added to your cart when you are notified! (Can only be used with an account)").padding([.leading, .vertical])
+                            Text("A default shopping list would be added to your cart when you are notified! (Can only be used with an account)").padding([.leading, .vertical]).foregroundColor(.primaryLabel)
                         }
                     }
                 }

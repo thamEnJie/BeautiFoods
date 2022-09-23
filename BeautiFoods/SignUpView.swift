@@ -27,7 +27,7 @@ struct SignUpView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Sign Up").font(.largeTitle).bold()
+            Text("Sign Up").font(.largeTitle).bold().foregroundColor(.primaryLabel)
             Spacer()
             Spacer()
             HStack {
@@ -79,7 +79,7 @@ struct SignUpView: View {
             } else {
                 HStack {
                     ProgressView()
-                    Text("Signing you up")
+                    Text("Signing you up").foregroundColor(.primaryLabel)
                 }
             }
         }.padding(.horizontal).padding(.horizontal).background(Color.backgroundColour)

@@ -32,6 +32,7 @@ struct CartView: View {
                 Text("$\(String(format: "%.2f", totalCost(cartM: cartManager, productM: productListManager)))")
                     .font(Font.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundColor(.primaryLabel)
                     .padding()
                 Spacer()
             }
@@ -65,6 +66,7 @@ struct CartView: View {
                                     VStack {
                                         HStack {
                                             Text(item.name)
+                                                .foregroundColor(.primaryLabel)
                                                 .font(Font.body)
                                                 .fontWeight(.medium)
                                             Spacer()
@@ -80,7 +82,7 @@ struct CartView: View {
                                                 Image(systemName: "minus.circle")
                                                     .imageScale(.large)
                                             }
-                                            Text(String(i.count))
+                                            Text(String(i.count)).foregroundColor(.primaryLabel)
                                             Button {
                                                 cartManager.cartItems[i.productID].count += 1
                                             } label: {
@@ -91,9 +93,11 @@ struct CartView: View {
                                         HStack {
                                             Text("$" + String(item.cost))
                                                 .font(Font.caption)
+                                                .foregroundColor(.primaryLabel)
                                             Spacer()
                                             Text("$" + String(format: "%.2f", item.cost * Double(i.count)))
                                                 .font(Font.caption2)
+                                                .foregroundColor(.primaryLabel)
                                         }
                                     }
                                 }
