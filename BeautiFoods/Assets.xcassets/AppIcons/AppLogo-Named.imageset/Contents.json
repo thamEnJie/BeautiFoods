@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "BeautiFoods_AppLogos_Named_Black.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
